@@ -1,0 +1,159 @@
+Fri 2014.09.05 11:54:50.531 +0100	LogWriter	START
+Logging started
+
+Fri 2014.09.05 11:54:50.534 +0100	SERVER_TEST	START
+Start logging
+
+Fri 2014.09.05 11:54:50.535 +0100	SERVER_TEST	INFO
+Test config
+  logFile	./log/remote.log
+        servers.remote.broker.name	remoteTest
+        servers.remote.broker.wildcard	remotePassthrough
+            servers.remote.broker.brokerList.remoteBroker.host	127.0.0.1
+            servers.remote.broker.brokerList.remoteBroker.port	31066
+            servers.remote.broker.serviceList.remotePassthrough.wildcard	pass
+                servers.remote.broker.serviceList.remotePassthrough.processList.pass.loader	lexa.core.server.factory.InternalLoader
+                servers.remote.broker.serviceList.remotePassthrough.processList.pass.class	PassThrough
+                servers.remote.broker.serviceList.remotePassthrough.processList.pass.connectionName	remoteBroker
+                servers.remote.broker.serviceList.remotePassthrough.processList.pass.maxProcesses	1
+                  servers.remote.broker.serviceList.remotePassthrough.processList.pass.config.allowAnonymous	false
+                    servers.remote.broker.serviceList.remotePassthrough.processList.pass.config.serviceList.echo	echoService
+        servers.remote.message.service	testService
+        servers.remote.message.message	echo
+          servers.remote.message.request.testMessage	### remote test ###
+
+Fri 2014.09.05 11:54:50.549 +0100	SERVER_TEST	INFO
+Run all tests
+
+Fri 2014.09.05 11:54:50.550 +0100	SERVER_TEST	INFO
+Test:remote
+
+Fri 2014.09.05 11:54:50.551 +0100	SERVER_TEST	INFO
+Config
+    broker.name	remoteTest
+    broker.wildcard	remotePassthrough
+        broker.brokerList.remoteBroker.host	127.0.0.1
+        broker.brokerList.remoteBroker.port	31066
+        broker.serviceList.remotePassthrough.wildcard	pass
+            broker.serviceList.remotePassthrough.processList.pass.loader	lexa.core.server.factory.InternalLoader
+            broker.serviceList.remotePassthrough.processList.pass.class	PassThrough
+            broker.serviceList.remotePassthrough.processList.pass.connectionName	remoteBroker
+            broker.serviceList.remotePassthrough.processList.pass.maxProcesses	1
+              broker.serviceList.remotePassthrough.processList.pass.config.allowAnonymous	false
+                broker.serviceList.remotePassthrough.processList.pass.config.serviceList.echo	echoService
+    message.service	testService
+    message.message	echo
+      message.request.testMessage	### remote test ###
+
+Fri 2014.09.05 11:54:50.661 +0100	Broker.remoteTest	START
+Start logging
+
+Fri 2014.09.05 11:54:50.678 +0100	BrokerHandler.remoteTest	START
+Start logging
+
+Fri 2014.09.05 11:54:50.690 +0100	Service.remotePassthrough	START
+Start logging
+
+Fri 2014.09.05 11:54:50.725 +0100	ProcessAgent.pass	START
+Start logging
+
+Fri 2014.09.05 11:54:50.739 +0100	ProcessFactory.PassThrough	START
+Start logging
+
+Fri 2014.09.05 11:54:50.762 +0100	MessagingContainerAsync.pass	START
+Start logging
+
+Fri 2014.09.05 11:54:50.763 +0100	Service.remotePassthrough	INFO
+Service initialised, wildcard ='pass'
+
+Fri 2014.09.05 11:54:50.765 +0100	MessagingContainerAsync.remotePassthrough	START
+Start logging
+
+Fri 2014.09.05 11:54:50.766 +0100	MessagingContainerAsync.remoteTest	START
+Start logging
+
+Fri 2014.09.05 11:54:50.797 +0100	Broker.remoteTest	INFO
+Initialised message broker remoteTest
+
+Fri 2014.09.05 11:54:50.798 +0100	Broker.remoteTest	INFO
+starting
+
+Fri 2014.09.05 11:54:50.802 +0100	Connection.remoteBroker#1	START
+Start logging
+
+Fri 2014.09.05 11:54:50.853 +0100	Broker.remoteTest	INFO
+new connection 1 to remoteBroker
+
+Fri 2014.09.05 11:54:50.855 +0100	BrokerHandler.remoteTest	DEBUG
+setRunning true
+
+Fri 2014.09.05 11:54:50.858 +0100	MessagingContainerAsync.remotePassthrough	INFO
+thread started
+
+Fri 2014.09.05 11:54:50.859 +0100	MessagingContainerAsync.pass	INFO
+thread started
+
+Fri 2014.09.05 11:54:50.860 +0100	MessagingContainerAsync.remoteTest	INFO
+thread started
+
+Fri 2014.09.05 11:54:50.862 +0100	Broker.remoteTest	INFO
+started
+
+Fri 2014.09.05 11:54:50.864 +0100	Connection.local#2	START
+Start logging
+
+Fri 2014.09.05 11:54:50.865 +0100	Broker.remoteTest	INFO
+new connection 2 to local
+
+Fri 2014.09.05 11:54:50.874 +0100	BrokerHandler.remoteTest	MESSAGE_IO
+inbound
+  service	testService
+  message	echo
+  connectionId	2
+  sourceId	1
+    request.testMessage	### remote test ###
+
+Fri 2014.09.05 11:54:50.879 +0100	Service.remotePassthrough	MESSAGE_IO
+inbound
+  service	testService
+  message	echo
+  connectionId	2
+  sourceId	1
+    request.testMessage	### remote test ###
+
+Fri 2014.09.05 11:54:50.883 +0100	ProcessAgent.pass	DEBUG
+inbound
+  service	testService
+  message	echo
+  connectionId	2
+  sourceId	1
+    request.testMessage	### remote test ###
+
+Fri 2014.09.05 11:54:50.887 +0100	ProcessAgent.pass	DEBUG
+processAction.start
+
+Fri 2014.09.05 11:54:50.890 +0100	ProcessAgent.pass	DEBUG
+Submit request
+  service	testService
+  message	echo
+  connectionId	2
+  sourceId	1
+    request.testMessage	### remote test ###
+
+Fri 2014.09.05 11:54:51.875 +0100	SERVER_TEST	DEBUG
+sleeping
+
+Fri 2014.09.05 11:55:03.717 +0100	ProcessAgent.pass	DEBUG
+Handle requests
+  sourceRef	1
+      messageList.1.service	echoService
+      messageList.1.message	echo
+        messageList.1.source.sourceRef	1
+          messageList.1.source.source.service	testService
+          messageList.1.source.source.message	echo
+          messageList.1.source.source.sourceId	1
+        messageList.1.request.testMessage	### remote test ###
+
+Fri 2014.09.05 11:55:03.740 +0100	ProcessAgent.pass	DEBUG
+processAction.end
+

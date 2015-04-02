@@ -1,0 +1,285 @@
+Thu 2015.04.02 06:28:15.251 +0100	LogWriter	START
+Logging started
+
+Thu 2015.04.02 06:28:15.251 +0100	SERVER_TEST	START
+Start logging
+
+Thu 2015.04.02 06:28:15.255 +0100	SERVER_TEST	INFO
+Test config
+  logFile	.\\log\\test.server.log
+        servers.echo.broker.name	echoTest
+        servers.echo.broker.type	inline
+                servers.echo.broker.serviceList.echoService.processList.echo.class	Echo
+            servers.echo.broker.logging.*.*	true
+            servers.echo.broker.logging.*.DEBUG	false
+        servers.echo.message.service	echoService
+        servers.echo.message.message	echo
+          servers.echo.message.request.testMessage	### echo body ###
+        servers.passThrough.broker.name	passTest
+        servers.passThrough.broker.type	inline
+        servers.passThrough.broker.wildcard	passService
+                servers.passThrough.broker.serviceList.echoService.processList.echo.class	Echo
+                servers.passThrough.broker.serviceList.echoService.processList.echo.maxProcesses	1
+            servers.passThrough.broker.serviceList.passService.wildcard	pass
+                servers.passThrough.broker.serviceList.passService.processList.pass.class	PassThrough
+                servers.passThrough.broker.serviceList.passService.processList.pass.connectionName	local
+                servers.passThrough.broker.serviceList.passService.processList.pass.maxProcesses	1
+                  servers.passThrough.broker.serviceList.passService.processList.pass.config.allowAnonymous	false
+                    servers.passThrough.broker.serviceList.passService.processList.pass.config.serviceList.echo	echoService
+            servers.passThrough.broker.logging.*.*	true
+            servers.passThrough.broker.logging.*.DEBUG	false
+        servers.passThrough.message.service	testService
+        servers.passThrough.message.message	echo
+          servers.passThrough.message.request.testMessage	### pass through test ###
+
+Thu 2015.04.02 06:28:15.271 +0100	SERVER_TEST	INFO
+Run all tests
+
+Thu 2015.04.02 06:28:15.271 +0100	SERVER_TEST	INFO
+Test:echo
+
+Thu 2015.04.02 06:28:15.271 +0100	SERVER_TEST	INFO
+Config
+    broker.name	echoTest
+    broker.type	inline
+            broker.serviceList.echoService.processList.echo.class	Echo
+        broker.logging.*.*	true
+        broker.logging.*.DEBUG	false
+    message.service	echoService
+    message.message	echo
+      message.request.testMessage	### echo body ###
+
+Thu 2015.04.02 06:28:15.339 +0100	echoTest@Broker	START
+Start logging
+
+Thu 2015.04.02 06:28:15.355 +0100	echoTest@BrokerHandler	START
+Start logging
+
+Thu 2015.04.02 06:28:15.367 +0100	echoService@Service	START
+Start logging
+
+Thu 2015.04.02 06:28:15.383 +0100	echo@ProcessAgent	START
+Start logging
+
+Thu 2015.04.02 06:28:15.395 +0100	Echo@ProcessFactory	START
+Start logging
+
+Thu 2015.04.02 06:28:15.587 +0100	echoService@Service	INFO
+Service initialised, wildcard ='null'
+
+Thu 2015.04.02 06:28:15.619 +0100	echoTest@Broker	INFO
+Initialised message broker echoTest
+
+Thu 2015.04.02 06:28:15.623 +0100	echoTest@Broker	INFO
+starting
+
+Thu 2015.04.02 06:28:15.623 +0100	echoTest@Broker	INFO
+started
+
+Thu 2015.04.02 06:28:15.623 +0100	local#1@Connection	START
+Start logging
+
+Thu 2015.04.02 06:28:15.623 +0100	echoTest@Broker	INFO
+new connection 1 to local
+
+Thu 2015.04.02 06:28:15.627 +0100	echoTest@BrokerHandler	MESSAGE_IO
+inbound
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+    request.testMessage	### echo body ###
+
+Thu 2015.04.02 06:28:15.627 +0100	echoService@Service	MESSAGE_IO
+inbound
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+    request.testMessage	### echo body ###
+
+Thu 2015.04.02 06:28:15.631 +0100	echoTest@Broker	MESSAGE_IO
+outbound
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+    request.testMessage	### echo body ###
+    reply.testMessage	### echo body ###
+  close	true
+
+Thu 2015.04.02 06:28:15.635 +0100	SERVER_TEST	INFO
+reply
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+    request.testMessage	### echo body ###
+    reply.testMessage	### echo body ###
+  close	true
+
+Thu 2015.04.02 06:28:15.639 +0100	echoTest@Broker	INFO
+closing
+
+Thu 2015.04.02 06:28:15.639 +0100	echoTest@Broker	INFO
+closed
+
+Thu 2015.04.02 06:28:15.639 +0100	SERVER_TEST	INFO
+Test:passThrough
+
+Thu 2015.04.02 06:28:15.639 +0100	SERVER_TEST	INFO
+Config
+    broker.name	passTest
+    broker.type	inline
+    broker.wildcard	passService
+            broker.serviceList.echoService.processList.echo.class	Echo
+            broker.serviceList.echoService.processList.echo.maxProcesses	1
+        broker.serviceList.passService.wildcard	pass
+            broker.serviceList.passService.processList.pass.class	PassThrough
+            broker.serviceList.passService.processList.pass.connectionName	local
+            broker.serviceList.passService.processList.pass.maxProcesses	1
+              broker.serviceList.passService.processList.pass.config.allowAnonymous	false
+                broker.serviceList.passService.processList.pass.config.serviceList.echo	echoService
+        broker.logging.*.*	true
+        broker.logging.*.DEBUG	false
+    message.service	testService
+    message.message	echo
+      message.request.testMessage	### pass through test ###
+
+Thu 2015.04.02 06:28:15.643 +0100	passTest@Broker	START
+Start logging
+
+Thu 2015.04.02 06:28:15.647 +0100	passTest@BrokerHandler	START
+Start logging
+
+Thu 2015.04.02 06:28:15.647 +0100	echoService@Service	START
+Start logging
+
+Thu 2015.04.02 06:28:15.647 +0100	echo@ProcessAgent	START
+Start logging
+
+Thu 2015.04.02 06:28:15.651 +0100	Echo@ProcessFactory	START
+Start logging
+
+Thu 2015.04.02 06:28:15.651 +0100	echoService@Service	INFO
+Service initialised, wildcard ='null'
+
+Thu 2015.04.02 06:28:15.651 +0100	passService@Service	START
+Start logging
+
+Thu 2015.04.02 06:28:15.651 +0100	pass@ProcessAgent	START
+Start logging
+
+Thu 2015.04.02 06:28:15.651 +0100	PassThrough@ProcessFactory	START
+Start logging
+
+Thu 2015.04.02 06:28:15.659 +0100	passService@Service	INFO
+Service initialised, wildcard ='pass'
+
+Thu 2015.04.02 06:28:15.659 +0100	passTest@Broker	INFO
+Initialised message broker passTest
+
+Thu 2015.04.02 06:28:15.659 +0100	passTest@Broker	INFO
+starting
+
+Thu 2015.04.02 06:28:15.659 +0100	local#1@Connection	START
+Start logging
+
+Thu 2015.04.02 06:28:15.659 +0100	passTest@Broker	INFO
+new connection 1 to local
+
+Thu 2015.04.02 06:28:15.663 +0100	passTest@Broker	INFO
+started
+
+Thu 2015.04.02 06:28:15.663 +0100	local#2@Connection	START
+Start logging
+
+Thu 2015.04.02 06:28:15.663 +0100	passTest@Broker	INFO
+new connection 2 to local
+
+Thu 2015.04.02 06:28:15.663 +0100	passTest@BrokerHandler	MESSAGE_IO
+inbound
+  service	testService
+  message	echo
+  connectionId	2
+  sourceId	1
+    request.testMessage	### pass through test ###
+
+Thu 2015.04.02 06:28:15.667 +0100	passService@Service	MESSAGE_IO
+inbound
+  service	testService
+  message	echo
+  connectionId	2
+  sourceId	1
+    request.testMessage	### pass through test ###
+
+Thu 2015.04.02 06:28:15.667 +0100	passTest@BrokerHandler	MESSAGE_IO
+inbound
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+  sourceRef	3
+    source.sourceRef	1
+      source.source.service	testService
+      source.source.message	echo
+      source.source.sourceId	1
+    request.testMessage	### pass through test ###
+
+Thu 2015.04.02 06:28:15.667 +0100	echoService@Service	MESSAGE_IO
+inbound
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+  sourceRef	3
+    source.sourceRef	1
+      source.source.service	testService
+      source.source.message	echo
+      source.source.sourceId	1
+    request.testMessage	### pass through test ###
+
+Thu 2015.04.02 06:28:15.671 +0100	passTest@Broker	MESSAGE_IO
+outbound
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+  sourceRef	3
+    source.sourceRef	1
+      source.source.service	testService
+      source.source.message	echo
+      source.source.sourceId	1
+    request.testMessage	### pass through test ###
+    reply.testMessage	### pass through test ###
+  close	true
+
+Thu 2015.04.02 06:28:15.675 +0100	passTest@Broker	MESSAGE_IO
+outbound
+  service	testService
+  message	echo
+  connectionId	2
+  sourceId	1
+    request.testMessage	### pass through test ###
+    reply.testMessage	### pass through test ###
+  close	true
+
+Thu 2015.04.02 06:28:15.679 +0100	SERVER_TEST	INFO
+reply
+  service	testService
+  message	echo
+  connectionId	2
+  sourceId	1
+    request.testMessage	### pass through test ###
+    reply.testMessage	### pass through test ###
+  close	true
+
+Thu 2015.04.02 06:28:15.679 +0100	passTest@Broker	INFO
+closing
+
+Thu 2015.04.02 06:28:15.683 +0100	passTest@Broker	INFO
+closed
+
+Thu 2015.04.02 06:28:15.683 +0100	SERVER_TEST	INFO
+Full test run complete
+

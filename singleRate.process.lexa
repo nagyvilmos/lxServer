@@ -1,0 +1,44 @@
+# singleRate config
+class - Config
+maxProcesses % 1
+config {
+	fields - ccy
+	handleRequest "
+		([data.contains data request.ccy]) ?
+		(
+			true
+		) : (
+			return = [string.format "Unknown currency '%1$3s'" request.ccy];
+			false
+		)
+	"
+	#buildReply "
+	#	reply.rate
+    #"
+    # calculation has datasets request and and data,
+	calculation {
+		ccy - request.ccy
+        ccyData - [data.value data ccy]
+		rate - ccy.rate
+	}
+    # a list of fields [NO dot] to send
+    reply - ccy rate
+	data {
+		GBP {
+			index % 0
+			rate $ 1.0
+		}
+		EUR {
+			index % 1
+			rate $ 1.25
+		}
+		USD {
+			index % 2
+			rate $ 1.50
+		}
+		HUF {
+			index % 40
+			rate $ 350.0
+		}
+	}
+}

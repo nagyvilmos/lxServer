@@ -1,0 +1,37 @@
+# config for testing a ConfigProcess based server.
+# There are three processes,
+#  - singleRate : returns an exchange rate for a currency.
+#  - fxRate : returns the rate between two currencies
+#  - convert : converts from one currency to another.
+
+# log to stdio for now
+# logFile .\\log\\config.log
+servers {
+    config {
+        broker {
+            name rates
+			type inline
+            serviceList {
+                currencies {
+                    processList {
+						singleRate @include singleRate.process.lexa
+                    }
+                }
+            }
+            logging {
+                * {
+                    * ? true
+                    #DEBUG ? false
+                }
+            }
+        }
+        message {
+            service - currencies
+            message - singleRate
+            request {
+                # this will fail as BOB is not defined:
+                ccy - BOB
+            }
+        }
+    }
+}

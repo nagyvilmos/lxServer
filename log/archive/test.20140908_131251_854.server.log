@@ -1,0 +1,252 @@
+Mon 2014.09.08 13:10:32.829 +0100	LogWriter	START
+Logging started
+
+Mon 2014.09.08 13:10:32.830 +0100	SERVER_TEST	START
+Start logging
+
+Mon 2014.09.08 13:10:32.832 +0100	SERVER_TEST	INFO
+Test config
+  logFile	.\\log\\test.server.log
+        servers.echo.broker.name	echoTest
+        servers.echo.broker.type	inline
+                servers.echo.broker.serviceList.echoService.processList.echo.loader	lexa.core.server.factory.InternalLoader
+                servers.echo.broker.serviceList.echoService.processList.echo.class	Echo
+            servers.echo.broker.logging.*.*	true
+            servers.echo.broker.logging.*.DEBUG	false
+        servers.echo.message.service	echoService
+        servers.echo.message.message	echo
+          servers.echo.message.request.testMessage	### echo body ###
+        servers.passThrough.broker.name	passTest
+        servers.passThrough.broker.type	inline
+        servers.passThrough.broker.wildcard	passService
+                servers.passThrough.broker.serviceList.echoService.processList.echo.loader	lexa.core.server.factory.InternalLoader
+                servers.passThrough.broker.serviceList.echoService.processList.echo.class	Echo
+                servers.passThrough.broker.serviceList.echoService.processList.echo.maxProcesses	1
+            servers.passThrough.broker.serviceList.passService.wildcard	pass
+                servers.passThrough.broker.serviceList.passService.processList.pass.loader	lexa.core.server.factory.InternalLoader
+                servers.passThrough.broker.serviceList.passService.processList.pass.class	PassThrough
+                servers.passThrough.broker.serviceList.passService.processList.pass.connectionName	local
+                servers.passThrough.broker.serviceList.passService.processList.pass.maxProcesses	1
+                  servers.passThrough.broker.serviceList.passService.processList.pass.config.allowAnonymous	false
+                    servers.passThrough.broker.serviceList.passService.processList.pass.config.serviceList.echo	echoService
+            servers.passThrough.broker.logging.*.*	true
+            servers.passThrough.broker.logging.*.DEBUG	false
+        servers.passThrough.message.service	testService
+        servers.passThrough.message.message	excho
+          servers.passThrough.message.request.testMessage	### pass through test ###
+
+Mon 2014.09.08 13:10:32.847 +0100	SERVER_TEST	INFO
+Run all tests
+
+Mon 2014.09.08 13:10:32.848 +0100	SERVER_TEST	INFO
+Test:echo
+
+Mon 2014.09.08 13:10:32.849 +0100	SERVER_TEST	INFO
+Config
+    broker.name	echoTest
+    broker.type	inline
+            broker.serviceList.echoService.processList.echo.loader	lexa.core.server.factory.InternalLoader
+            broker.serviceList.echoService.processList.echo.class	Echo
+        broker.logging.*.*	true
+        broker.logging.*.DEBUG	false
+    message.service	echoService
+    message.message	echo
+      message.request.testMessage	### echo body ###
+
+Mon 2014.09.08 13:10:33.026 +0100	Broker.echoTest	START
+Start logging
+
+Mon 2014.09.08 13:10:33.032 +0100	BrokerHandler.echoTest	START
+Start logging
+
+Mon 2014.09.08 13:10:33.035 +0100	Service.echoService	START
+Start logging
+
+Mon 2014.09.08 13:10:33.063 +0100	ProcessAgent.echo	START
+Start logging
+
+Mon 2014.09.08 13:10:33.081 +0100	ProcessFactory.Echo	START
+Start logging
+
+Mon 2014.09.08 13:10:33.091 +0100	Service.echoService	INFO
+Service initialised, wildcard ='null'
+
+Mon 2014.09.08 13:10:33.097 +0100	Broker.echoTest	INFO
+Initialised message broker echoTest
+
+Mon 2014.09.08 13:10:33.098 +0100	Broker.echoTest	INFO
+starting
+
+Mon 2014.09.08 13:10:33.099 +0100	Broker.echoTest	INFO
+started
+
+Mon 2014.09.08 13:10:33.101 +0100	Connection.local#1	START
+Start logging
+
+Mon 2014.09.08 13:10:33.101 +0100	Broker.echoTest	INFO
+new connection 1 to local
+
+Mon 2014.09.08 13:10:33.103 +0100	BrokerHandler.echoTest	MESSAGE_IO
+inbound
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+    request.testMessage	### echo body ###
+
+Mon 2014.09.08 13:10:33.105 +0100	Service.echoService	MESSAGE_IO
+inbound
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+    request.testMessage	### echo body ###
+
+Mon 2014.09.08 13:10:33.118 +0100	Broker.echoTest	MESSAGE_IO
+outbound
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+    request.testMessage	### echo body ###
+    reply.testMessage	### echo body ###
+  close	true
+
+Mon 2014.09.08 13:10:33.121 +0100	SERVER_TEST	INFO
+reply
+  service	echoService
+  message	echo
+  connectionId	1
+  sourceId	1
+    request.testMessage	### echo body ###
+    reply.testMessage	### echo body ###
+  close	true
+
+Mon 2014.09.08 13:10:33.123 +0100	Broker.echoTest	INFO
+closing
+
+Mon 2014.09.08 13:10:33.124 +0100	Broker.echoTest	INFO
+closed
+
+Mon 2014.09.08 13:10:33.124 +0100	SERVER_TEST	INFO
+Test:passThrough
+
+Mon 2014.09.08 13:10:33.125 +0100	SERVER_TEST	INFO
+Config
+    broker.name	passTest
+    broker.type	inline
+    broker.wildcard	passService
+            broker.serviceList.echoService.processList.echo.loader	lexa.core.server.factory.InternalLoader
+            broker.serviceList.echoService.processList.echo.class	Echo
+            broker.serviceList.echoService.processList.echo.maxProcesses	1
+        broker.serviceList.passService.wildcard	pass
+            broker.serviceList.passService.processList.pass.loader	lexa.core.server.factory.InternalLoader
+            broker.serviceList.passService.processList.pass.class	PassThrough
+            broker.serviceList.passService.processList.pass.connectionName	local
+            broker.serviceList.passService.processList.pass.maxProcesses	1
+              broker.serviceList.passService.processList.pass.config.allowAnonymous	false
+                broker.serviceList.passService.processList.pass.config.serviceList.echo	echoService
+        broker.logging.*.*	true
+        broker.logging.*.DEBUG	false
+    message.service	testService
+    message.message	excho
+      message.request.testMessage	### pass through test ###
+
+Mon 2014.09.08 13:10:33.130 +0100	Broker.passTest	START
+Start logging
+
+Mon 2014.09.08 13:10:33.131 +0100	BrokerHandler.passTest	START
+Start logging
+
+Mon 2014.09.08 13:10:33.132 +0100	Service.echoService	START
+Start logging
+
+Mon 2014.09.08 13:10:33.134 +0100	ProcessAgent.echo	START
+Start logging
+
+Mon 2014.09.08 13:10:33.135 +0100	ProcessFactory.Echo	START
+Start logging
+
+Mon 2014.09.08 13:10:33.136 +0100	Service.echoService	INFO
+Service initialised, wildcard ='null'
+
+Mon 2014.09.08 13:10:33.137 +0100	Service.passService	START
+Start logging
+
+Mon 2014.09.08 13:10:33.137 +0100	ProcessAgent.pass	START
+Start logging
+
+Mon 2014.09.08 13:10:33.138 +0100	ProcessFactory.PassThrough	START
+Start logging
+
+Mon 2014.09.08 13:10:33.142 +0100	Service.passService	INFO
+Service initialised, wildcard ='pass'
+
+Mon 2014.09.08 13:10:33.143 +0100	Broker.passTest	INFO
+Initialised message broker passTest
+
+Mon 2014.09.08 13:10:33.143 +0100	Broker.passTest	INFO
+starting
+
+Mon 2014.09.08 13:10:33.144 +0100	Connection.local#1	START
+Start logging
+
+Mon 2014.09.08 13:10:33.145 +0100	Broker.passTest	INFO
+new connection 1 to local
+
+Mon 2014.09.08 13:10:33.145 +0100	Broker.passTest	INFO
+started
+
+Mon 2014.09.08 13:10:33.146 +0100	Connection.local#2	START
+Start logging
+
+Mon 2014.09.08 13:10:33.147 +0100	Broker.passTest	INFO
+new connection 2 to local
+
+Mon 2014.09.08 13:10:33.147 +0100	BrokerHandler.passTest	MESSAGE_IO
+inbound
+  service	testService
+  message	excho
+  connectionId	2
+  sourceId	1
+    request.testMessage	### pass through test ###
+
+Mon 2014.09.08 13:10:33.149 +0100	Service.passService	MESSAGE_IO
+inbound
+  service	testService
+  message	excho
+  connectionId	2
+  sourceId	1
+    request.testMessage	### pass through test ###
+
+Mon 2014.09.08 13:10:33.151 +0100	ProcessException	START
+Start logging
+
+Mon 2014.09.08 13:10:33.152 +0100	ProcessException	ERROR
+Unknown service
+  service	testService
+  message	excho
+  connectionId	2
+  sourceId	1
+    request.testMessage	### pass through test ###
+
+Mon 2014.09.08 13:10:33.154 +0100	ProcessAgent.pass	ERROR
+pass.3failed.
+Exception:
+lexa.core.server.ProcessException: Unknown service
+	at lexa.core.server.process.PassThrough.handleRequest(PassThrough.java:184)
+	at lexa.core.server.ProcessAgent.processAction(ProcessAgent.java:229)
+	at lexa.core.server.ProcessAgent.process(ProcessAgent.java:203)
+	at lexa.core.server.ProcessAgent.inbound(ProcessAgent.java:167)
+	at lexa.core.server.messaging.MessagingContainerInline.inbound(MessagingContainerInline.java:37)
+	at lexa.core.server.Service.inbound(Service.java:147)
+	at lexa.core.server.messaging.MessagingContainerInline.inbound(MessagingContainerInline.java:37)
+	at lexa.core.server.BrokerHandler.inbound(BrokerHandler.java:118)
+	at lexa.core.server.messaging.MessagingContainerInline.inbound(MessagingContainerInline.java:37)
+	at lexa.core.server.Broker.inbound(Broker.java:220)
+	at lexa.core.server.connection.LocalConnection.inbound(LocalConnection.java:47)
+	at lexa.core.server.connection.Connection.submit(Connection.java:111)
+	at lxserver.ServerTest.test(ServerTest.java:121)
+	at lxserver.ServerTest.testAll(ServerTest.java:94)
+	at lxserver.ServerTest.main(ServerTest.java:63)
+

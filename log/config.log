@@ -1,0 +1,114 @@
+Tue 2013.10.29 09:35:58.219 +0000	LogWriter	START
+Logging started
+
+Tue 2013.10.29 09:35:58.219 +0000	SERVER_TEST	START
+Start logging
+
+Tue 2013.10.29 09:35:58.219 +0000	SERVER_TEST	INFO
+Test config
+  logFile	.\\log\\config.log
+        servers.echo.broker.name	configBroker
+                servers.echo.broker.serviceList.currencies.processList.singleRate.classPath	internal:Config
+                servers.echo.broker.serviceList.currencies.processList.singleRate.maxProcesses	1
+                  servers.echo.broker.serviceList.currencies.processList.singleRate.config.fields	ccy
+                  servers.echo.broker.serviceList.currencies.processList.singleRate.config.handleRequest			([data.contains request.request ccy]) ?
+		(
+			true
+		) : (
+			return = [string.format "Unknown currency %1" request.ccy];
+			false
+		)
+                      servers.echo.broker.serviceList.currencies.processList.singleRate.config.data.GBP.index	0
+                      servers.echo.broker.serviceList.currencies.processList.singleRate.config.data.GBP.rate	1.0
+                      servers.echo.broker.serviceList.currencies.processList.singleRate.config.data.EUR.index	1
+                      servers.echo.broker.serviceList.currencies.processList.singleRate.config.data.EUR.rate	1.25
+                      servers.echo.broker.serviceList.currencies.processList.singleRate.config.data.USD.index	2
+                      servers.echo.broker.serviceList.currencies.processList.singleRate.config.data.USD.rate	1.5
+                      servers.echo.broker.serviceList.currencies.processList.singleRate.config.data.HUF.index	40
+                      servers.echo.broker.serviceList.currencies.processList.singleRate.config.data.HUF.rate	350.0
+            servers.echo.broker.logging.*.*	true
+            servers.echo.broker.logging.*.DEBUG	false
+        servers.echo.message.service	currencies
+        servers.echo.message.message	singleRate
+          servers.echo.message.request.ccy	BOB
+
+Tue 2013.10.29 09:35:58.219 +0000	SERVER_TEST	INFO
+Run all tests
+
+Tue 2013.10.29 09:35:58.219 +0000	SERVER_TEST	INFO
+Test:echo
+
+Tue 2013.10.29 09:35:58.219 +0000	SERVER_TEST	INFO
+Config
+    broker.name	configBroker
+            broker.serviceList.currencies.processList.singleRate.classPath	internal:Config
+            broker.serviceList.currencies.processList.singleRate.maxProcesses	1
+              broker.serviceList.currencies.processList.singleRate.config.fields	ccy
+              broker.serviceList.currencies.processList.singleRate.config.handleRequest			([data.contains request.request ccy]) ?
+		(
+			true
+		) : (
+			return = [string.format "Unknown currency %1" request.ccy];
+			false
+		)
+                  broker.serviceList.currencies.processList.singleRate.config.data.GBP.index	0
+                  broker.serviceList.currencies.processList.singleRate.config.data.GBP.rate	1.0
+                  broker.serviceList.currencies.processList.singleRate.config.data.EUR.index	1
+                  broker.serviceList.currencies.processList.singleRate.config.data.EUR.rate	1.25
+                  broker.serviceList.currencies.processList.singleRate.config.data.USD.index	2
+                  broker.serviceList.currencies.processList.singleRate.config.data.USD.rate	1.5
+                  broker.serviceList.currencies.processList.singleRate.config.data.HUF.index	40
+                  broker.serviceList.currencies.processList.singleRate.config.data.HUF.rate	350.0
+        broker.logging.*.*	true
+        broker.logging.*.DEBUG	false
+    message.service	currencies
+    message.message	singleRate
+      message.request.ccy	BOB
+
+Tue 2013.10.29 09:35:58.251 +0000	MessageBroker.configBroker	START
+Start logging
+
+Tue 2013.10.29 09:35:58.251 +0000	HostService.host	START
+Start logging
+
+Tue 2013.10.29 09:35:58.251 +0000	ConfigService.currencies	START
+Start logging
+
+Tue 2013.10.29 09:35:58.251 +0000	ProcessAgent.singleRate	START
+Start logging
+
+Tue 2013.10.29 09:35:58.251 +0000	ProcessFactory.internal:Config	START
+Start logging
+
+Tue 2013.10.29 09:35:58.266 +0000	ConfigService.currencies	INFO
+Service initialised, wildcard ='null'
+
+Tue 2013.10.29 09:35:58.266 +0000	MessageBroker.configBroker	INFO
+Initialised message broker configBroker
+
+Tue 2013.10.29 09:35:58.266 +0000	MessageBroker.configBroker	INFO
+starting
+
+Tue 2013.10.29 09:35:58.266 +0000	MessageBroker.configBroker	INFO
+started
+
+Tue 2013.10.29 09:35:58.266 +0000	ProcessAgent.singleRate	INFO
+Running
+
+Tue 2013.10.29 09:35:58.266 +0000	MessageBroker.configBroker	INFO
+Broker started
+
+Tue 2013.10.29 09:35:58.282 +0000	Class.local[1]	START
+Start logging
+
+Tue 2013.10.29 09:35:58.282 +0000	MessageBroker.configBroker	INFO
+new connection 1 to local
+
+Tue 2013.10.29 09:35:58.282 +0000	MessageBroker.configBroker	MESSAGE_IO
+inbound
+  service	currencies
+  message	singleRate
+  connectionId	1
+  sourceId	1
+    request.ccy	BOB
+
