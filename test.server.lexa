@@ -47,6 +47,19 @@ servers {
                 testMessage - ### echo body ###
             }
         }
+        expectedReply {
+            service - echoService
+            message - echo
+            connectionId % 1
+            sourceId % 1
+            request {
+                testMessage - ### echo body ###
+            }
+            reply {
+                testMessage - ### echo body ###
+            }
+            close ? true
+        }
     }
 
     passThrough {
@@ -95,6 +108,20 @@ servers {
             request {
                 testMessage - ### pass through test ###
             }
+        }
+        expectedReply {
+            service - testService
+            message - echo
+            # pass through connects to the server, so connection is second.
+            connectionId % 2
+            sourceId % 1
+            request {
+                testMessage - ### pass through test ###
+            }
+            reply {
+                testMessage - ### pass through test ###
+            }
+            close ? true
         }
     }
 }

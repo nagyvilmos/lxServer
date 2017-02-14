@@ -33,5 +33,13 @@ servers {
                 ccy - BOB
             }
         }
+        expectedReply {
+            service - currencies
+            message - singleRate
+            request {
+                # this will fail as BOB is not defined:
+                ccy - BOB
+            }
+        }
     }
 }

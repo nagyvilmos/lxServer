@@ -17,7 +17,7 @@ package lexa.core.server;
 
 import lexa.core.process.ProcessException;
 import java.util.*;
-import lexa.core.data.ConfigData;
+import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.DataSet;
 import lexa.core.data.exception.DataException;
 import lexa.core.expression.ExpressionException;
@@ -35,7 +35,7 @@ public class BrokerHandler
 		implements MessagingHandler
 {
 
-	public static MessagingContainer container(ConfigData config, FunctionLibrary functionLibrary, boolean inline)
+	public static MessagingContainer container(ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
 			throws DataException, ProcessException, ExpressionException
 	{
 		BrokerHandler handler = new BrokerHandler(config, functionLibrary, inline);
@@ -59,16 +59,16 @@ public class BrokerHandler
 	private final String name;
 	private Broker broker;
 
-	BrokerHandler(ConfigData config, FunctionLibrary functionLibrary, boolean inline)
+	BrokerHandler(ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
 			throws DataException, ProcessException, ExpressionException
 	{
-		this.name = config.getSetting(Config.NAME);
+		this.name = config.getString(Config.NAME);
         this.logger = new Logger(BrokerHandler.class.getSimpleName() , this.name);
 
-		this.wildcard = config.getOptionalSetting(Config.WILDCARD);
+		this.wildcard = config.get(Config.WILDCARD,null).getString();
 
         this.timeout = (config.contains(Config.TIMEOUT)) ?
-                config.getItem(Config.TIMEOUT).getInteger():
+                config.getInteger(Config.TIMEOUT):
                 Value.DEFAULT_TIMEOUT;
         this.receivedTimes = new ArrayList();
 
@@ -77,7 +77,7 @@ public class BrokerHandler
 		ClassLoader cl = ClassLoader.getSystemClassLoader();
         // create the services list
         this.services = new HashMap();
-        ConfigData serviceList = config.getConfigData(Config.SERVICE_LIST);
+        ConfigDataSet serviceList = config.getDataSet(Config.SERVICE_LIST);
         String[] serviceNames = serviceList.keys();
         for (String sn : serviceNames)
 		{
@@ -85,7 +85,7 @@ public class BrokerHandler
 			{
                 throw new DataException("Config contains duplicate service: " + sn + "@" + name);
             }
-		    ConfigData serviceConfig = serviceList.getConfigData(sn);
+		    ConfigDataSet serviceConfig = serviceList.getDataSet(sn);
 			this.services.put(sn, Service.container(sn, cl, serviceConfig, functionLibrary, inline));
 					
             serviceConfig.close();

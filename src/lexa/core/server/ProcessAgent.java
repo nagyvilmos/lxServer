@@ -18,6 +18,7 @@ package lexa.core.server;
 import lexa.core.process.ProcessException;
 import java.util.*;
 import lexa.core.data.*;
+import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.exception.DataException;
 import lexa.core.expression.ExpressionException;
 import lexa.core.expression.function.FunctionLibrary;
@@ -69,7 +70,7 @@ public class ProcessAgent
 				MessageSource
 {
 
-	public static MessagingContainer container(String name, ClassLoader classLoader, ConfigData config, FunctionLibrary functionLibrary, boolean inline)
+	public static MessagingContainer container(String name, ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
             throws DataException,
 				ProcessException,
 				ExpressionException
@@ -117,30 +118,29 @@ public class ProcessAgent
      * @throws  ProcessException
      *          when an exception occurs within the processes.
      */
-	private ProcessAgent(String name, ClassLoader classLoader, ConfigData config, FunctionLibrary functionLibrary)
+	private ProcessAgent(String name, ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary)
             throws DataException, ProcessException, ExpressionException
 	{
         this.name = name;
         this.logger = new Logger(ProcessAgent.class.getSimpleName(), this.name);
 		this.inbound = new FIFOQueue();  // TODO - lose the queue, it's queued above here
-        this.connectionName = config.getOptionalSetting(Config.CONNECTION_NAME);
+        this.connectionName = config.get(Config.CONNECTION_NAME,null).getString();
         this.processes = new LinkedList();
         this.outboundMessages = new HashMap();
-        this.maxProcesses = config.contains(Config.MAX_PROCESSES) ?
-				config.getItem(Config.MAX_PROCESSES).getInteger() :
-				1;
+        this.maxProcesses =config.get(Config.MAX_PROCESSES, 1).getInteger();
 
-        ConfigData processConfig = config.contains(Config.CONFIG) ?
-                    config.getConfigData(Config.CONFIG) : null;
+        ConfigDataSet processConfig = config.contains(Config.CONFIG) ?
+                    config.getDataSet(Config.CONFIG) : null;
         this.factory = new ProcessFactory(
 				classLoader,
-                config.getOptionalSetting(Config.CLASS_LOADER,
-						InternalLoader.class.getCanonicalName()),
-                config.getSetting(Config.CLASS_PATH),
+                config.get(Config.CLASS_LOADER,
+						InternalLoader.class.getCanonicalName()).getString(),
+                config.getString(Config.CLASS_PATH),
                 processConfig, functionLibrary);
-        if (processConfig != null) {
-            processConfig.close();
-        }
+       // if (processConfig != null) {
+       //     processConfig.close();
+       // }
+        config.close();
         // create the first process, this will ensure the config is clean and the factory sound.
         this.processes.add(factory.instance());
 		
@@ -300,7 +300,7 @@ public class ProcessAgent
         DataSet messageList = requests.getDataSet(Context.MESSAGE_LIST);
         for (DataItem item : messageList) {
             Message message = new Message(this, 
-					item.getDataSet().clone()
+					new SimpleDataSet(item.getDataSet())
 							.put(Context.SOURCE_REF,sourceRef));
             int mid = this.connection.submit(message);
             this.outboundMessages.put(mid, message);

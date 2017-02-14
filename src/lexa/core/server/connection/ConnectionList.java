@@ -17,7 +17,7 @@ package lexa.core.server.connection;
 
 import java.util.HashMap;
 import java.util.Map;
-import lexa.core.data.ConfigData;
+import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.exception.DataException;
 import lexa.core.server.Broker;
 import lexa.core.server.context.Value;
@@ -38,7 +38,7 @@ public class ConnectionList
 
 	private Broker broker;
 
-	public ConnectionList(ConfigData config)
+	public ConnectionList(ConfigDataSet config)
 			throws DataException
 	{
         //load the list of remote hosts:
@@ -49,14 +49,15 @@ public class ConnectionList
                     b < brokerNames.length;
                     b++) {
                 String brokerName = brokerNames[b];
-                ConfigData brokerConfig = config.getConfigData(brokerName);
+                ConfigDataSet brokerConfig = config.getDataSet(brokerName);
                 if (this.remoteHosts.containsKey(brokerName)) {
                     throw new DataException("Config contains duplicate remote hosts: " + brokerName);
                 }
                 this.remoteHosts.put(brokerName, new RemoteHost(brokerName, brokerConfig));
-                brokerConfig.close();
             }
+            config.close();
         }
+
 		this.lastSessionId = 0;
         this.connections = new HashMap<Integer, Connection>();
 	}

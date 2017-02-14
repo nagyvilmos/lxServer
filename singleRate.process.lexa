@@ -15,11 +15,11 @@ config {
 	#buildReply "
 	#	reply.rate
     #"
-    # calculation has datasets request and and data,
+    # calculation has datasets request and data:
 	calculation {
 		ccy - request.ccy
         ccyData - [data.value data ccy]
-		rate - ccy.rate
+		rate - ccyData.rate
 	}
     # a list of fields [NO dot] to send
     reply - ccy rate

@@ -1,17 +1,17 @@
 /*
- * ================================================================================
+ * =============================================================================
  * Lexa - Property of William Norman-Walker
- * --------------------------------------------------------------------------------
+ * -----------------------------------------------------------------------------
  * ServerTest.java
- *--------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: August 2013
- *--------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * Change Log
- * Date:        By: Ref:        Description:
- * ----------   --- ----------  --------------------------------------------------
- * 2015-03-11	WNW	2015-03		Updated in line with new lxData
- *================================================================================
+ * Date:        By: Description:
+ * ----------   --- ------------------------------------------------------------
+ * 2015-03-11	WNW	Updated in line with new lxData
+ *==============================================================================
  */
 
 package lxserver;
@@ -19,7 +19,7 @@ package lxserver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import lexa.core.data.ConfigData;
+import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.DataSet;
 import lexa.core.data.io.DataReader;
 import lexa.core.expression.function.FunctionLibrary;
@@ -28,6 +28,8 @@ import lexa.core.server.connection.Connection;
 import lexa.core.server.messaging.Message;
 import lexa.core.server.Broker;
 import lexa.core.server.context.Config;
+import lexa.test.TestClass;
+import lexa.test.TestRun;
 
 /**
  * Test bed for lxServer.
@@ -41,7 +43,23 @@ import lexa.core.server.context.Config;
  */
 public class ServerTest {
 
-    public static void main(String ... args) {
+    public static void main(String ... args)
+    {
+        TestClass[] tests = new TestClass[]{
+            new TestServerConfig(
+                (args != null && args.length > 0) ?
+                        args[0] :
+                        null
+            )
+        };
+        System.out.println(
+                new TestRun(tests)
+                        .execute()
+                        .getReport()
+        );        
+    }
+    
+    public static void xmain(String ... args) {
         String fileName = "test.server.lexa";
         if (args != null && args.length > 0) {
             fileName = args[0];
@@ -114,7 +132,7 @@ public class ServerTest {
         Broker broker = null;
         try {
 			FunctionLibrary functionLibrary = new FunctionLibrary(functions);
-            ConfigData config = new ConfigData(testCase.getDataSet("broker"));
+            ConfigDataSet config = new ConfigDataSet(testCase.getDataSet("broker"));
             broker = new Broker(config, functionLibrary);
             config.close();
             broker.start();

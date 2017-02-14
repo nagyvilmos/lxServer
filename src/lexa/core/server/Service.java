@@ -17,7 +17,7 @@ package lexa.core.server;
 
 import lexa.core.process.ProcessException;
 import java.util.*;
-import lexa.core.data.ConfigData;
+import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.DataSet;
 import lexa.core.data.exception.DataException;
 import lexa.core.expression.ExpressionException;
@@ -61,7 +61,7 @@ import lexa.core.server.messaging.*;
 public class Service
 		implements MessagingHandler {
 
-	public static MessagingContainer container(String name, ClassLoader classLoader, ConfigData config, FunctionLibrary functionLibrary, boolean inline)
+	public static MessagingContainer container(String name, ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
             throws DataException, ProcessException, ExpressionException
 	{
 		Service service =new Service(name, classLoader, config, functionLibrary, inline);
@@ -98,15 +98,15 @@ public class Service
      * @throws  ProcessException
      *          when an exception occurs within the processes.
      */
-    private Service (String name, ClassLoader classLoader, ConfigData config, FunctionLibrary functionLibrary, boolean inline)
+    private Service (String name, ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
             throws DataException, ProcessException, ExpressionException
 	{
 
         this.name = name;
         this.logger = new Logger(Service.class.getSimpleName() , this.name);
-        this.wildcard = config.getOptionalSetting(Config.WILDCARD);
+        this.wildcard = config.get(Config.WILDCARD,null).getString();
         this.processes = new HashMap();
-        ConfigData processList = config.getConfigData(Config.PROCESS_LIST);
+        ConfigDataSet processList = config.getDataSet(Config.PROCESS_LIST);
         String[] processNames = processList.keys();
         for (String pn : processNames)
 		{
@@ -114,12 +114,12 @@ public class Service
 			{
                 throw new DataException("Config contains duplicate process: " + pn + "@" + name);
 			}
-            ConfigData processConfig = processList.getConfigData(pn);
+            ConfigDataSet processConfig = processList.getDataSet(pn);
             this.processes.put(pn, ProcessAgent.container(pn,classLoader, processConfig, functionLibrary,inline));
-					
-            processConfig.close();
+
         }
         processList.close();
+        config.close();
         if (this.wildcard != null && !this.processes.containsKey(this.wildcard)) {
             throw new DataException("Config missing wildcard process: " + this.wildcard + "@" + this.name);
         }

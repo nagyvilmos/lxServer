@@ -18,7 +18,7 @@ package lexa.core.server;
 import lexa.core.process.ProcessException;
 import lexa.core.server.messaging.MessagingCaller;
 import lexa.core.server.messaging.MessagingContainer;
-import lexa.core.data.ConfigData;
+import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.DataSet;
 import lexa.core.data.exception.DataException;
 import lexa.core.expression.ExpressionException;
@@ -104,7 +104,7 @@ public class Broker
      *          when an exception occurs within the processes.
 	 * @throws lexa.core.expression.ExpressionException
      */
-    public Broker(ConfigData config)
+    public Broker(ConfigDataSet config)
             throws DataException, ProcessException, ExpressionException
 	{
         this(config, null);
@@ -123,13 +123,13 @@ public class Broker
 	 * @throws  ExpressionException
 	            when an exception occurs within an expression.
      */
-    public Broker(ConfigData config, FunctionLibrary functionLibrary)
+    public Broker(ConfigDataSet config, FunctionLibrary functionLibrary)
 			throws DataException, ProcessException, ExpressionException
 	{
-        this.name = config.getSetting(Config.NAME);
+        this.name = config.getString(Config.NAME);
         this.logger = new Logger(Broker.class.getSimpleName() , this.name);
-		ConfigData loggingConfig = config.contains(Config.LOGGING) ?
-                config.getConfigData(Config.LOGGING) :
+		ConfigDataSet loggingConfig = config.contains(Config.LOGGING) ?
+                config.getDataSet(Config.LOGGING) :
                 null;
         if (loggingConfig != null) {
             Logger.logLevels().setLogging(loggingConfig);
@@ -139,7 +139,7 @@ public class Broker
 		Boolean inline = false;
 		if (config.contains(Config.TYPE))
 		{
-			switch (config.getSetting(Config.TYPE))
+			switch (config.getString(Config.TYPE))
 			{
 				case Value.TYPE_INLINE :
 				{
@@ -158,8 +158,8 @@ public class Broker
 		}
 		this.handler = BrokerHandler.container(config, functionLibrary, inline);
 
-		ConfigData brokerList = (config.contains(Config.BROKER_LIST)) ?
-				config.getConfigData(Config.BROKER_LIST) :
+		ConfigDataSet brokerList = (config.contains(Config.BROKER_LIST)) ?
+				config.getDataSet(Config.BROKER_LIST) :
 				null;
 		this.connectionList = new ConnectionList(brokerList);
 		if (brokerList != null) {
@@ -206,7 +206,7 @@ public class Broker
      * @return  a new connection to the named message broker;
      *          or {@code null} if no connection could be established.
      *
-     * @link MessageBroker#MessageBroker(lexa.core.data.ConfigData) MessageBroker(ConfigData config)
+     * @link MessageBroker#MessageBroker(lexa.core.data.config.ConfigDataSet) MessageBroker(ConfigDataSet config)
      */
     Connection getConnection(String connectionName)
             throws ProcessException {

@@ -7,7 +7,7 @@ package lexa.core.server.connection;
 import java.io.IOException;
 import java.net.*;
 import lexa.core.comms.Session;
-import lexa.core.data.ConfigData;
+import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.exception.DataException;
 import lexa.core.process.ProcessException;
 import lexa.core.server.context.Config;
@@ -21,16 +21,17 @@ class RemoteHost {
     private final InetAddress ipAddress;
     private final Integer port;
 
-    RemoteHost(String name, ConfigData config)
+    RemoteHost(String name, ConfigDataSet config)
             throws DataException {
         this.name = name;
-		String ip = config.getSetting(Config.HOST);
+		String ip = config.getString(Config.HOST);
         try {
             this.ipAddress = Inet4Address.getByName(ip);
         } catch (UnknownHostException ex) {
             throw new DataException("Unable to determine remote host " + this.name + "@" + ip );
         }
-        this.port = config.getItem(Config.PORT).getInteger();
+        this.port = config.getInteger(Config.PORT);
+        config.close();
     }
 
 	String getName() {
