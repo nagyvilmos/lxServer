@@ -1,1 +1,5 @@
-/log/
+/log
+/javadocs
+/nbproject/private
+/build
+/dist/javadoc
