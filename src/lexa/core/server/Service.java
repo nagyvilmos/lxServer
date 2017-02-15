@@ -116,10 +116,9 @@ public class Service
 			}
             ConfigDataSet processConfig = processList.getDataSet(pn);
             this.processes.put(pn, ProcessAgent.container(pn,classLoader, processConfig, functionLibrary,inline));
-
+            processConfig.close();
         }
         processList.close();
-        config.close();
         if (this.wildcard != null && !this.processes.containsKey(this.wildcard)) {
             throw new DataException("Config missing wildcard process: " + this.wildcard + "@" + this.name);
         }
