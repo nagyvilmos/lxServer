@@ -1,0 +1,47 @@
+# test a remote server connection
+# logFile ./log/remote.log
+logging {
+	* {
+		START ? false
+	}
+}
+servers {
+    remote {
+        broker {
+            name remoteTest
+            wildcard remotePassthrough
+            brokerList {
+              remoteBroker {
+                host 127.0.0.1
+                port % 31066
+              }
+            }
+            serviceList {
+                remotePassthrough {
+                    wildcard - pass
+                    processList {
+                        pass {
+                            loader - lexa.core.server.factory.InternalLoader
+                            class - PassThrough
+                            connectionName - remoteBroker
+                            maxProcesses % 1
+                            config {
+                                allowAnonymous ? false
+                                serviceList {
+                                    echo - echoService
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        message {
+            service - testService
+            message - echo
+            request {
+                testMessage - ### remote test ###
+            }
+        }
+    }
+}

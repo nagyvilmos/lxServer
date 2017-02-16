@@ -28,7 +28,6 @@ import lexa.core.queue.Queue;
 import lexa.core.server.connection.Connection;
 import lexa.core.server.context.Config;
 import lexa.core.server.context.Context;
-import lexa.core.process.factory.InternalLoader;
 import lexa.core.process.factory.ProcessFactory;
 import lexa.core.server.messaging.*;
 import lexa.core.process.LexaProcess;
@@ -70,12 +69,12 @@ public class ProcessAgent
 				MessageSource
 {
 
-	public static MessagingContainer container(String name, ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
+	public static MessagingContainer container(ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
             throws DataException,
 				ProcessException,
 				ExpressionException
 	{
-		ProcessAgent processAgent = new ProcessAgent(name, classLoader, config, functionLibrary);
+		ProcessAgent processAgent = new ProcessAgent(classLoader, config, functionLibrary);
 		return inline ?
 					new MessagingContainerInline(processAgent) :
 					new MessagingContainerAsync(processAgent);
@@ -118,32 +117,21 @@ public class ProcessAgent
      * @throws  ProcessException
      *          when an exception occurs within the processes.
      */
-	private ProcessAgent(String name, ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary)
+	private ProcessAgent(ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary)
             throws DataException, ProcessException, ExpressionException
 	{
-        this.name = name;
+        this.name = config.getString(Config.NAME);
         this.logger = new Logger(ProcessAgent.class.getSimpleName(), this.name);
 		this.inbound = new FIFOQueue();  // TODO - lose the queue, it's queued above here
         this.connectionName = config.get(Config.CONNECTION_NAME,null).getString();
         this.processes = new LinkedList();
         this.outboundMessages = new HashMap();
         this.maxProcesses =config.get(Config.MAX_PROCESSES, 1).getInteger();
-
-        ConfigDataSet processConfig = config.contains(Config.CONFIG) ?
-                    config.getDataSet(Config.CONFIG) : null;
         this.factory = new ProcessFactory(
-				classLoader,
-                config.get(Config.CLASS_LOADER,
-						InternalLoader.class.getCanonicalName()).getString(),
-                config.getString(Config.CLASS_PATH),
-                processConfig, functionLibrary);
-       // if (processConfig != null) {
-       //     processConfig.close();
-       // }
-        config.close();
+				classLoader, config, functionLibrary);
         // create the first process, this will ensure the config is clean and the factory sound.
         this.processes.add(factory.instance());
-		
+
 		this.forwardReplies = new FIFOQueue();
 		this.active = false;
     }
@@ -299,7 +287,7 @@ public class ProcessAgent
         Integer sourceRef = requests.getInteger(Context.SOURCE_REF);
         DataSet messageList = requests.getDataSet(Context.MESSAGE_LIST);
         for (DataItem item : messageList) {
-            Message message = new Message(this, 
+            Message message = new Message(this,
 					new SimpleDataSet(item.getDataSet())
 							.put(Context.SOURCE_REF,sourceRef));
             int mid = this.connection.submit(message);

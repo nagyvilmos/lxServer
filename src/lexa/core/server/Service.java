@@ -19,6 +19,7 @@ import lexa.core.process.ProcessException;
 import java.util.*;
 import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.DataSet;
+import lexa.core.data.config.ConfigValueArray;
 import lexa.core.data.exception.DataException;
 import lexa.core.expression.ExpressionException;
 import lexa.core.expression.function.FunctionLibrary;
@@ -61,11 +62,11 @@ import lexa.core.server.messaging.*;
 public class Service
 		implements MessagingHandler {
 
-	public static MessagingContainer container(String name, ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
+	public static MessagingContainer container(ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
             throws DataException, ProcessException, ExpressionException
 	{
-		Service service =new Service(name, classLoader, config, functionLibrary, inline);
-		
+		Service service =new Service(classLoader, config, functionLibrary, inline);
+
 		return inline ?
 				new MessagingContainerInline(service) :
 				new MessagingContainerAsync(service);
@@ -98,24 +99,24 @@ public class Service
      * @throws  ProcessException
      *          when an exception occurs within the processes.
      */
-    private Service (String name, ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
+    private Service (ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
             throws DataException, ProcessException, ExpressionException
 	{
 
-        this.name = name;
+        this.name = config.getString(Config.NAME);
         this.logger = new Logger(Service.class.getSimpleName() , this.name);
         this.wildcard = config.get(Config.WILDCARD,null).getString();
         this.processes = new HashMap();
-        ConfigDataSet processList = config.getDataSet(Config.PROCESS_LIST);
-        String[] processNames = processList.keys();
-        for (String pn : processNames)
+        ConfigValueArray processList = config.getArray(Config.PROCESS_LIST);
+        for (int p=0; p < processList.size(); p++)
 		{
+            ConfigDataSet processConfig = processList.get(p).getDataSet();
+            String pn = processConfig.getString(Config.NAME);
 			if (this.processes.containsKey(pn))
 			{
                 throw new DataException("Config contains duplicate process: " + pn + "@" + name);
 			}
-            ConfigDataSet processConfig = processList.getDataSet(pn);
-            this.processes.put(pn, ProcessAgent.container(pn,classLoader, processConfig, functionLibrary,inline));
+            this.processes.put(pn, ProcessAgent.container(classLoader, processConfig, functionLibrary,inline));
             processConfig.close();
         }
         processList.close();
@@ -149,7 +150,7 @@ public class Service
                 pac = this.processes.get(this.wildcard);
             }
             if (pac == null) {
-                bounceBack(message, "unknown message");
+                bounceBack(message, "unknown message " + process + " on " + this.getName());
                 return;
             }
         }
@@ -182,7 +183,7 @@ public class Service
 	{
 		this.container.outbound(message);
 	}
-	
+
 	@Override
 	public String getName()
 	{

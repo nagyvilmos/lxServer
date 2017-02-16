@@ -19,6 +19,7 @@ import lexa.core.process.ProcessException;
 import java.util.*;
 import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.DataSet;
+import lexa.core.data.config.ConfigValueArray;
 import lexa.core.data.exception.DataException;
 import lexa.core.expression.ExpressionException;
 import lexa.core.expression.function.FunctionLibrary;
@@ -39,7 +40,7 @@ public class BrokerHandler
 			throws DataException, ProcessException, ExpressionException
 	{
 		BrokerHandler handler = new BrokerHandler(config, functionLibrary, inline);
-		
+
 		return inline ?
 				new MessagingContainerInline(handler) :
 				new MessagingContainerAsync(handler);
@@ -67,30 +68,31 @@ public class BrokerHandler
 
 		this.wildcard = config.get(Config.WILDCARD,null).getString();
 
-        this.timeout = (config.contains(Config.TIMEOUT)) ?
-                config.getInteger(Config.TIMEOUT):
-                Value.DEFAULT_TIMEOUT;
+        this.timeout = config
+                .get(Config.TIMEOUT,Value.DEFAULT_TIMEOUT)
+                .getInteger();
         this.receivedTimes = new ArrayList();
 
-		// if needed we can always get a URLClassLoader to allow 
+		// if needed we can always get a URLClassLoader to allow
 		// the explicit listing of jars to load.
 		ClassLoader cl = ClassLoader.getSystemClassLoader();
         // create the services list
         this.services = new HashMap();
-        ConfigDataSet serviceList = config.getDataSet(Config.SERVICE_LIST);
-        String[] serviceNames = serviceList.keys();
-        for (String sn : serviceNames)
+        ConfigValueArray serviceList = config.getArray(Config.SERVICE_LIST);
+        for (int v=0; v <serviceList.size(); v++)
 		{
+            ConfigDataSet serviceConfig = serviceList.get(v).getDataSet();
+            String sn = serviceConfig.getString(Config.NAME);
             if (this.services.containsKey(sn))
 			{
                 throw new DataException("Config contains duplicate service: " + sn + "@" + name);
             }
-		    ConfigDataSet serviceConfig = serviceList.getDataSet(sn);
-			this.services.put(sn, Service.container(sn, cl, serviceConfig, functionLibrary, inline));
-					
+			this.services.put(sn, Service.container(cl, serviceConfig, functionLibrary, inline));
+
             serviceConfig.close();
         }
         serviceList.close();
+
         if (this.wildcard != null && !this.services.containsKey(this.wildcard)) {
             throw new DataException("Config missing wildcard service: " + this.wildcard + "@" + name);
         }
@@ -153,7 +155,7 @@ public class BrokerHandler
 	{
 		this.container.outbound(message);
 	}
-	
+
     private class MessageKey {
         private final int connection;
         private final int session;
@@ -165,7 +167,7 @@ public class BrokerHandler
             this.session = message;
         }
     }
-	
+
     /**
      * Method to set the running state of the broker and then notify of the change.
      *
@@ -178,7 +180,7 @@ public class BrokerHandler
         this.running = running;
         this.notifyAll();
     }
-	
+
 	Connection getConnection(String connectionName) throws ProcessException
 	{
 		return this.broker.getConnection(connectionName);

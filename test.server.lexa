@@ -1,0 +1,133 @@
+# config for testing through the lxServer
+# test - list of tests to run, otherwise all tests are run.
+# [functions {
+#   <global function defs for lxExression>
+# }]
+# servers {
+#   <test name> {
+#     [functions {
+#       <function defs for this test>
+#     }]
+#     broker {
+#       <broker config for this test>
+#     }
+#     message {
+#       <message to send for this test>
+#     }
+#   }
+# }
+logFile .\\log\\test.server.log
+#test passThrough
+servers {
+    echo {
+        broker {
+            name echoTest
+			type inline
+            serviceList [
+                {
+                    name - echoService
+                    processList [
+                        {
+                            name - echoProc
+                            # loader - lexa.core.server.factory.InternalLoader
+                            class - Echo
+                        }
+                    ]
+                }
+            ]
+            logging {
+                * {
+                    * ? true
+                    DEBUG ? false
+                }
+            }
+        }
+        message {
+            service - echoService
+            message - echoProc
+            request {
+                testMessage - ### echo body ###
+            }
+        }
+        expectedReply {
+            service - echoService
+            message - echoProc
+            connectionId % 1
+            sourceId % 1
+            request {
+                testMessage - ### echo body ###
+            }
+            reply {
+                testMessage - ### echo body ###
+            }
+            close ? true
+        }
+    }
+
+    passThrough {
+        broker {
+            name - passTest
+			type inline
+            wildcard - passService
+            serviceList [
+                {
+                    name - echoService
+                    processList [
+                        {
+                            name - echoProc
+                            # loader - lexa.core.server.factory.InternalLoader
+                            class - Echo
+                            maxProcesses % 1
+                        }
+                    ]
+                }
+                {
+                    name - passService
+                    wildcard - passProc
+                    processList [
+                        {
+                            name - passProc
+                            # loader - lexa.core.server.factory.InternalLoader
+                            class - PassThrough
+                            connectionName - local
+                            maxProcesses % 1
+                            config {
+                                allowAnonymous ? false
+                                serviceList {
+                                    echoProc - echoService
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+            logging {
+                * {
+                    * ? true
+                    DEBUG ? true
+                }
+            }
+        }
+        message {
+            service - testService
+            message - echoProc
+            request {
+                testMessage - ### pass through test ###
+            }
+        }
+        expectedReply {
+            service - testService
+            message - echoProc
+            # pass through connects to the server, so connection is second.
+            connectionId % 2
+            sourceId % 1
+            request {
+                testMessage - ### pass through test ###
+            }
+            reply {
+                testMessage - ### pass through test ###
+            }
+            close ? true
+        }
+    }
+}
