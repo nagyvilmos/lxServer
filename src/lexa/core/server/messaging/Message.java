@@ -17,7 +17,7 @@ package lexa.core.server.messaging;
 
 import lexa.core.data.DataSet;
 import lexa.core.data.SealedDataSet;
-import lexa.core.data.SimpleDataSet;
+import lexa.core.data.ArrayDataSet;
 import lexa.core.server.connection.Connection;
 import lexa.core.server.context.Context;
 
@@ -155,7 +155,7 @@ public class Message {
         this.message = message;
         this.request = request;
         this.source = source;
-        this.reply = new SimpleDataSet();
+        this.reply = new ArrayDataSet();
         this.sourceReference = sourceReference;
         this.replyReceived = false;
         this.newReplyReceived = false;
@@ -215,7 +215,7 @@ public class Message {
     public DataSet getHeader(int connectionId, int sourceId) {
         this.connectionId = connectionId;
         this.sourceId = sourceId;
-        DataSet header = new SimpleDataSet()
+        DataSet header = new ArrayDataSet()
 				.put(Context.SERVICE,this.service)
 				.put(Context.MESSAGE, this.message)
 				.put(Context.CONNECTION_ID, connectionId)

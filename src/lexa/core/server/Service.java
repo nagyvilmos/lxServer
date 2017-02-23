@@ -19,7 +19,7 @@ import lexa.core.process.ProcessException;
 import java.util.*;
 import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.DataSet;
-import lexa.core.data.config.ConfigValueArray;
+import lexa.core.data.config.ConfigDataArray;
 import lexa.core.data.exception.DataException;
 import lexa.core.expression.ExpressionException;
 import lexa.core.expression.function.FunctionLibrary;
@@ -107,7 +107,7 @@ public class Service
         this.logger = new Logger(Service.class.getSimpleName() , this.name);
         this.wildcard = config.get(Config.WILDCARD,null).getString();
         this.processes = new HashMap();
-        ConfigValueArray processList = config.getArray(Config.PROCESS_LIST);
+        ConfigDataArray processList = config.getArray(Config.PROCESS_LIST);
         for (int p=0; p < processList.size(); p++)
 		{
             ConfigDataSet processConfig = processList.get(p).getDataSet();

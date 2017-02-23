@@ -165,7 +165,7 @@ public class ProcessAgent
 
     @Override
     public synchronized void replyReceived(Message message) {
-		DataSet reply = new SimpleDataSet()
+		DataSet reply = new ArrayDataSet()
 				.put(Context.SOURCE_REF, message.getSourceReference())
 				.put(Context.REPLY, message.getReply());
 		this.logger.debug("replyRecieved", reply);
@@ -288,7 +288,7 @@ public class ProcessAgent
         DataSet messageList = requests.getDataSet(Context.MESSAGE_LIST);
         for (DataItem item : messageList) {
             Message message = new Message(this,
-					new SimpleDataSet(item.getDataSet())
+					new ArrayDataSet(item.getDataSet())
 							.put(Context.SOURCE_REF,sourceRef));
             int mid = this.connection.submit(message);
             this.outboundMessages.put(mid, message);

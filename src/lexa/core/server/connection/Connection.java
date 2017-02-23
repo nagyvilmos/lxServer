@@ -19,7 +19,7 @@ package lexa.core.server.connection;
 import java.util.HashMap;
 import java.util.Map;
 import lexa.core.data.DataSet;
-import lexa.core.data.SimpleDataSet;
+import lexa.core.data.ArrayDataSet;
 import lexa.core.logging.Logger;
 import lexa.core.server.Broker;
 import lexa.core.server.messaging.Message;
@@ -79,7 +79,7 @@ public abstract class Connection {
      *          the id of the message
      */
     public void timeout(int sid) {
-        DataSet timeoutMessage = new SimpleDataSet()
+        DataSet timeoutMessage = new ArrayDataSet()
 				.put(Context.SOURCE_ID,sid)
 				.put(Context.RETURN,"message timed out with no response");
 		this.logger.error("message timeout", timeoutMessage,null);

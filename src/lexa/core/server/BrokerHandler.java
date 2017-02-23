@@ -19,7 +19,7 @@ import lexa.core.process.ProcessException;
 import java.util.*;
 import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.DataSet;
-import lexa.core.data.config.ConfigValueArray;
+import lexa.core.data.config.ConfigDataArray;
 import lexa.core.data.exception.DataException;
 import lexa.core.expression.ExpressionException;
 import lexa.core.expression.function.FunctionLibrary;
@@ -78,7 +78,7 @@ public class BrokerHandler
 		ClassLoader cl = ClassLoader.getSystemClassLoader();
         // create the services list
         this.services = new HashMap();
-        ConfigValueArray serviceList = config.getArray(Config.SERVICE_LIST);
+        ConfigDataArray serviceList = config.getArray(Config.SERVICE_LIST);
         for (int v=0; v <serviceList.size(); v++)
 		{
             ConfigDataSet serviceConfig = serviceList.get(v).getDataSet();
