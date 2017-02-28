@@ -15,6 +15,8 @@ import lexa.core.data.DataSet;
 public interface MessagingCaller
 {
 	public void inbound(DataSet message);
-	
+
 	public void outbound(DataSet message);
+
+    public MessagingStatus getStatus();
 }

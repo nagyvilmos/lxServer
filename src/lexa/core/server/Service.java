@@ -62,6 +62,14 @@ import lexa.core.server.messaging.*;
 public class Service
 		implements MessagingHandler {
 
+    private final MessagingStatus status;
+
+    @Override
+    public MessagingStatus getStatus()
+    {
+        return this.status;
+    }
+
 	public static MessagingContainer container(ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
             throws DataException, ProcessException, ExpressionException
 	{
@@ -105,6 +113,7 @@ public class Service
 
         this.name = config.getString(Config.NAME);
         this.logger = new Logger(Service.class.getSimpleName() , this.name);
+        this.status = new MessagingStatus(this.name);
         this.wildcard = config.get(Config.WILDCARD,null).getString();
         this.processes = new HashMap();
         ConfigDataArray processList = config.getArray(Config.PROCESS_LIST);
@@ -116,7 +125,10 @@ public class Service
 			{
                 throw new DataException("Config contains duplicate process: " + pn + "@" + name);
 			}
-            this.processes.put(pn, ProcessAgent.container(classLoader, processConfig, functionLibrary,inline));
+            MessagingContainer pc =
+                    ProcessAgent.container(classLoader, processConfig, functionLibrary,inline);
+            this.processes.put(pn, pc);
+            this.status.addChild(pc.getHandler().getStatus());
             processConfig.close();
         }
         processList.close();
@@ -143,6 +155,7 @@ public class Service
 	{
 		// find out who this belongs to//
         this.logger.message("MESSAGE_IO", "inbound" ,message,null);
+        this.status.addReceived();
 		String process = message.getString(Context.MESSAGE);
 		MessagingContainer  pac = this.processes.get(process);
         if (pac == null) {
@@ -150,6 +163,7 @@ public class Service
                 pac = this.processes.get(this.wildcard);
             }
             if (pac == null) {
+                this.status.addError();
                 bounceBack(message, "unknown message " + process + " on " + this.getName());
                 return;
             }
@@ -181,6 +195,7 @@ public class Service
 	@Override
 	public void outbound(DataSet message)
 	{
+        this.status.addReplied();
 		this.container.outbound(message);
 	}
 

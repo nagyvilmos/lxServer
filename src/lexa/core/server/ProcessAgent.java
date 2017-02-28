@@ -69,6 +69,14 @@ public class ProcessAgent
 				MessageSource
 {
 
+    private final MessagingStatus status;
+
+    @Override
+    public MessagingStatus getStatus()
+    {
+        return this.status;
+    }
+
 	public static MessagingContainer container(ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
             throws DataException,
 				ProcessException,
@@ -121,6 +129,7 @@ public class ProcessAgent
             throws DataException, ProcessException, ExpressionException
 	{
         this.name = config.getString(Config.NAME);
+        this.status = new MessagingStatus(this.name);
         this.logger = new Logger(ProcessAgent.class.getSimpleName(), this.name);
 		this.inbound = new FIFOQueue();  // TODO - lose the queue, it's queued above here
         this.connectionName = config.get(Config.CONNECTION_NAME,null).getString();
@@ -152,6 +161,7 @@ public class ProcessAgent
 	public void inbound(DataSet message)
 	{
 		this.logger.debug("inbound", message);
+        this.status.addReceived();
         this.inbound.add(message);
 		process();
 	}
@@ -234,7 +244,7 @@ public class ProcessAgent
 				catch (ProcessException ex)
 				{
 					this.logger.error(this.getName() + '.' +  process.getId() + "failed.", ex);
-					//??
+					this.status.addError();
 				}
 			}
 			if (!this.inbound.isEmpty() && this.processes.size() < this.maxProcesses)
@@ -262,6 +272,7 @@ public class ProcessAgent
 	public void outbound(DataSet message)
 	{
 		this.logger.debug("outbound", message);
+        this.status.addReplied();
 		this.container.outbound(message);
 	}
 

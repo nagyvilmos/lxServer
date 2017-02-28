@@ -23,4 +23,6 @@ public interface MessagingHandler
 	 */
 	public void start(MessagingCaller caller, MessagingContainer container)
 			throws ProcessException;
+
+    public MessagingStatus getStatus();
 }

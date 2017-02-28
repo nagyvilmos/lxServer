@@ -15,7 +15,9 @@ import lexa.core.process.ProcessException;
 public interface MessagingContainer
 		extends MessagingCaller
 {
-	public void start(MessagingCaller caller)
+    public MessagingHandler getHandler();
+
+    public void start(MessagingCaller caller)
 			throws ProcessException;
 
 }

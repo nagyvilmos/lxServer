@@ -36,7 +36,12 @@ public class MessagingContainerAsync
 		this.inbound = new FIFOQueue();
 		this.outbound = new FIFOQueue();
 	}
-	
+
+    public MessagingHandler getHandler()
+    {
+        return this.handler;
+    }
+
 	@Override
 	public void inbound(DataSet message)
 	{
@@ -50,7 +55,7 @@ public class MessagingContainerAsync
 		this.outbound.add(message);
 		this.messageNotify();
 	}
-	
+
 	@Override
 	public void run()
 	{
@@ -61,7 +66,7 @@ public class MessagingContainerAsync
 		}
 		this.logger.info("thread stopped");
 	}
-	
+
 	@Override
 	public void start(MessagingCaller caller)
 			throws ProcessException
@@ -113,4 +118,9 @@ public class MessagingContainerAsync
 			this.caller.outbound(this.outbound.get());
 		}
 	}
+
+    public MessagingStatus getStatus()
+    {
+        return this.handler.getStatus();
+    }
 }

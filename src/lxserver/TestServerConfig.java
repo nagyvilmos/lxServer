@@ -8,7 +8,6 @@ package lxserver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
 import lexa.core.data.DataSet;
 import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.exception.DataException;
@@ -44,7 +43,7 @@ public class TestServerConfig
     {
         this.testList = testList;
     }
-    
+
     public String[] getFileList()
     {
         if (this.testList == null || this.testList.equals(""))
@@ -53,13 +52,13 @@ public class TestServerConfig
         }
         return this.testList.split(" ");
     }
-    
+
     public Boolean setUpTestFile(Object arg) throws FileNotFoundException, IOException
     {
         String fileName = (String)arg + ".server.lexa";
-        this.testData = 
+        this.testData =
                 new DataReader(new File(fileName)).read();
-        
+
         if (this.testData.contains(Config.LOG_FILE)) {
             lexa.core.logging.Logger.setLogWriter(
                     new File(this.testData.getString(Config.LOG_FILE)));
@@ -70,10 +69,10 @@ public class TestServerConfig
         }
         this.logger = new Logger("SERVER_TEST", fileName);
         this.logger.info("Test config", this.testData);
-        
+
         return true;
     }
-            
+
     public Object[] testList(Object arg)
     {
         if (this.testData.contains("test"))
@@ -104,7 +103,7 @@ public class TestServerConfig
         this.broker.start();
         return true;
     }
-    
+
     @TestAnnotation(arguments = "testList", setUp = "setUpServer", tearDown = "tearDownServer")
     public Boolean testServerConfig(Object arg) throws ProcessException, InterruptedException
     {
@@ -119,6 +118,7 @@ public class TestServerConfig
                 if (slept == 1) {
                     logger.debug("sleeping");
                 }
+                logger.info("status",this.broker.getStatus().toData());
                 slept++;
                 this.wait(1000);
             }
@@ -129,9 +129,10 @@ public class TestServerConfig
             DataSet reply = request.getReply();
 
             logger.info("reply", reply);
-            
+            logger.info("status",this.broker.getStatus().toData());
+
             return reply.equals(this.testCase.getDataSet("expectedReply"));
-            
+
         } catch (InterruptedException | ProcessException ex) {
             logger.error("Exception during test", ex);
             throw ex;

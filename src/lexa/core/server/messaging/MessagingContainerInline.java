@@ -66,5 +66,13 @@ public class MessagingContainerInline
 		}
 	}
 
-	
+    public MessagingHandler getHandler()
+    {
+        return this.handler;
+    }
+
+    public MessagingStatus getStatus()
+    {
+        return this.handler.getStatus();
+    }
 }

@@ -36,6 +36,14 @@ public class BrokerHandler
 		implements MessagingHandler
 {
 
+    private final MessagingStatus status;
+
+    @Override
+    public MessagingStatus getStatus()
+    {
+        return this.status;
+    }
+
 	public static MessagingContainer container(ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
 			throws DataException, ProcessException, ExpressionException
 	{
@@ -60,12 +68,12 @@ public class BrokerHandler
 	private final String name;
 	private Broker broker;
 
-	BrokerHandler(ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
+	private BrokerHandler(ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
 			throws DataException, ProcessException, ExpressionException
 	{
 		this.name = config.getString(Config.NAME);
         this.logger = new Logger(BrokerHandler.class.getSimpleName() , this.name);
-
+        this.status=new MessagingStatus(this.name);
 		this.wildcard = config.get(Config.WILDCARD,null).getString();
 
         this.timeout = config
@@ -87,8 +95,9 @@ public class BrokerHandler
 			{
                 throw new DataException("Config contains duplicate service: " + sn + "@" + name);
             }
-			this.services.put(sn, Service.container(cl, serviceConfig, functionLibrary, inline));
-
+            MessagingContainer sc = Service.container(cl, serviceConfig, functionLibrary, inline);
+			this.services.put(sn, sc);
+            this.status.addChild(sc.getHandler().getStatus());
             serviceConfig.close();
         }
         serviceList.close();
@@ -115,6 +124,7 @@ public class BrokerHandler
 	{
 		// find out who this belongs to//
         this.logger.message("MESSAGE_IO", "inbound" ,message,null);
+        this.status.addReceived();
 		String serviceName = message.getString(Context.SERVICE);
 		MessagingContainer serviceContainer = this.services.get(serviceName);
         if (serviceContainer == null) {
@@ -122,6 +132,7 @@ public class BrokerHandler
                 serviceContainer = this.services.get(this.wildcard);
             }
             if (serviceContainer == null) {
+                this.status.addError();
                 bounceBack(message, "unknown service");
                 return;
             }
@@ -153,6 +164,7 @@ public class BrokerHandler
 	@Override
 	public void outbound(DataSet message)
 	{
+        this.status.addReplied();
 		this.container.outbound(message);
 	}
 

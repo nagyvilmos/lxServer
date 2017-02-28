@@ -27,6 +27,7 @@ import lexa.core.logging.Logger;
 import lexa.core.server.connection.Connection;
 import lexa.core.server.connection.ConnectionList;
 import lexa.core.server.context.*;
+import lexa.core.server.messaging.MessagingStatus;
 
 /**
  * A message broker to provide asynchronous message services to callers.
@@ -143,7 +144,7 @@ public class Broker
 			{
 				case Value.TYPE_INLINE :
 				{
-					inline = true; 
+					inline = true;
 					break;
 				}
 				case Value.TYPE_ASYNC :
@@ -165,7 +166,7 @@ public class Broker
 		if (brokerList != null) {
 			brokerList.close();
 		}
-		
+
         this.logger.info("Initialised message broker " + this.name);
     }
 
@@ -178,6 +179,10 @@ public class Broker
 		this.logger.info("started");
 	}
 
+    public MessagingStatus getStatus()
+    {
+        return this.handler.getStatus();
+    }
     /**
      * Get a connection for the local {@link MessageBroker}
      *
@@ -258,5 +263,5 @@ public class Broker
 //            }
 //        }
     }
-	
+
 }
