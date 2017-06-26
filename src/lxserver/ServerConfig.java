@@ -1,7 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*==============================================================================
+ * Lexa - Property of William Norman-Walker
+ *------------------------------------------------------------------------------
+ * ServerConfig.java
+ *------------------------------------------------------------------------------
+ * Author:  William Norman-Walker
+ * Created: February 2017
+ *==============================================================================
  */
 package lxserver;
 
@@ -24,11 +28,12 @@ import lexa.test.TestAnnotation;
 import lexa.test.TestClass;
 
 /**
- *
+ * Test handler for a config based server.
  * @author william
+ * @since 2017-02
  */
 @TestAnnotation(arguments = "getFileList", setUp = "setUpTestFile", tearDown = "tearDownTestFile")
-public class TestServerConfig
+public class ServerConfig
         extends TestClass
 {
 
@@ -39,7 +44,7 @@ public class TestServerConfig
     private DataSet testData;
 
     private final String testList;
-    public TestServerConfig(String testList)
+    public ServerConfig(String testList)
     {
         this.testList = testList;
     }

@@ -1,19 +1,12 @@
-/*
- * =============================================================================
+/*==============================================================================
  * Lexa - Property of William Norman-Walker
- * -----------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * ServerTest.java
  *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: August 2013
- *------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Description:
- * ----------   --- ------------------------------------------------------------
- * 2015-03-11	WNW	Updated in line with new lxData
  *==============================================================================
  */
-
 package lxserver;
 
 import java.io.File;
@@ -35,7 +28,7 @@ import lexa.test.TestRun;
  * Test bed for lxServer.
  * <p>Uses a {@see DataSet} file to store test servers.  This should be used like this to run simple
  * tests on single components and not to test fully functional servers.
- * See the file {@code config.test} to see the full test structure.
+ * See the file {@code test.server.lexa} to see the full test structure.
  *
  * @author William
  * @since 2013-08
@@ -46,7 +39,7 @@ public class ServerTest {
     public static void main(String ... args)
     {
         TestClass[] tests = new TestClass[]{
-            new TestServerConfig(
+            new ServerConfig(
                 (args != null && args.length > 0) ?
                         args[0] :
                         null
@@ -56,9 +49,9 @@ public class ServerTest {
                 new TestRun(tests)
                         .execute()
                         .getReport()
-        );        
+        );
     }
-    
+
     public static void xmain(String ... args) {
         String fileName = "test.server.lexa";
         if (args != null && args.length > 0) {
