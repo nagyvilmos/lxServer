@@ -26,6 +26,7 @@ import lexa.core.server.context.Config;
 import lexa.core.server.messaging.Message;
 import lexa.test.TestAnnotation;
 import lexa.test.TestClass;
+import lexa.test.TestResult;
 
 /**
  * Test handler for a config based server.
@@ -58,7 +59,7 @@ public class ServerConfig
         return this.testList.split(" ");
     }
 
-    public Boolean setUpTestFile(Object arg) throws FileNotFoundException, IOException
+    public TestResult setUpTestFile(Object arg) throws FileNotFoundException, IOException
     {
         String fileName = (String)arg + ".server.lexa";
         this.testData =
@@ -75,7 +76,7 @@ public class ServerConfig
         this.logger = new Logger("SERVER_TEST", fileName);
         this.logger.info("Test config", this.testData);
 
-        return true;
+        return TestResult.notNull(this.testData);
     }
 
     public Object[] testList(Object arg)
@@ -87,7 +88,7 @@ public class ServerConfig
         return this.testData.getDataSet("servers").keys();
     }
 
-    public Boolean setUpServer(Object arg) throws ExpressionException, DataException, ProcessException
+    public TestResult setUpServer(Object arg) throws ExpressionException, DataException, ProcessException
     {
         String testName=(String)arg;
         this.logger.info("Test:" + testName);
@@ -106,11 +107,11 @@ public class ServerConfig
         this.broker = new Broker(config, functionLibrary);
         config.close();
         this.broker.start();
-        return true;
+        return TestResult.result(this.broker.getStatus().isActive());
     }
 
     @TestAnnotation(arguments = "testList", setUp = "setUpServer", tearDown = "tearDownServer")
-    public Boolean testServerConfig(Object arg) throws ProcessException, InterruptedException
+    public TestResult testServerConfig(Object arg) throws ProcessException, InterruptedException
     {
         try
         {
@@ -136,7 +137,7 @@ public class ServerConfig
             logger.info("reply", reply);
             logger.info("status",this.broker.getStatus().toData());
 
-            return reply.equals(this.testCase.getDataSet("expectedReply"));
+            return TestResult.result(this.testCase.getDataSet("expectedReply"), reply);
 
         } catch (InterruptedException | ProcessException ex) {
             logger.error("Exception during test", ex);
@@ -144,18 +145,20 @@ public class ServerConfig
         }
     }
 
-    public Boolean tearDownServer(Object arg)
+    public TestResult tearDownServer(Object arg)
     {
         this.broker.close();
         this.broker=null;
         this.testCase=null;
-        return true;
+        return TestResult.all(
+                TestResult.isNull(this.broker),
+                TestResult.isNull(this.testCase)
+        );
     }
 
-    public Boolean tearDownTestFile(Object arg)
+    public TestResult tearDownTestFile(Object arg)
     {
-        this.logger.close();
         this.testData=null;
-        return true;
+        return TestResult.isNull(this.testData);
     }
 }

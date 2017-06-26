@@ -48,6 +48,11 @@ public class MessagingStatus
         throw new UnsupportedOperationException("MessagingStatus does not support fromData");
     }
 
+    public boolean isActive()
+    {
+        throw new UnsupportedOperationException("MessagingStatus.isActive not supported yet.");
+    }
+
     @Override
     public synchronized DataSet toData()
     {
