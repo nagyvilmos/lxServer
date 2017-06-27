@@ -70,7 +70,7 @@ import lexa.core.server.messaging.MessagingStatus;
  * <dt>&lt;serviceName&gt;</dt><dd>a unique name within the broker for a service;
  *      the name {@code host} may not be used.</dd>
  * <dt>&lt;service config&gt;</dt><dd>the configuration for the service;
- *      see {@link ConfigService}.</dd>
+ *      see {@link Service}.</dd>
  * </dl>
  *
  * @author William
@@ -97,7 +97,8 @@ public class Broker
      *          when there is a problem in the configuration.
      * @throws  ProcessException
      *          when an exception occurs within the processes.
-	 * @throws lexa.core.expression.ExpressionException
+	 * @throws  ExpressionException
+     *          when an exception occurs within an expression
      */
     public Broker(ConfigDataSet config)
             throws DataException, ProcessException, ExpressionException
@@ -173,15 +174,17 @@ public class Broker
 		this.logger.info("started");
 	}
 
+    @Override
     public MessagingStatus getStatus()
     {
         return this.handler.getStatus();
     }
     /**
-     * Get a connection for the local {@link MessageBroker}
+     * Get a connection for the local {@link Broker}
      *
      * @return  a new connection to this broker.
-	 * @throws lexa.core.server.ProcessException
+	 * @throws  ProcessException
+     *          when an exception occurs getting a connection
      */
     public Connection getConnection()
             throws ProcessException {

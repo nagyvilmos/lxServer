@@ -26,7 +26,7 @@ import lexa.test.TestRun;
 
 /**
  * Test bed for lxServer.
- * <p>Uses a {@see DataSet} file to store test servers.  This should be used like this to run simple
+ * <p>Uses a {@link DataSet} file to store test servers.  This should be used like this to run simple
  * tests on single components and not to test fully functional servers.
  * See the file {@code test.server.lexa} to see the full test structure.
  *

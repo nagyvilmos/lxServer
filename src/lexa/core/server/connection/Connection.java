@@ -1,18 +1,11 @@
-/*
- * ================================================================================
+/*==============================================================================
  * Lexa - Property of William Norman-Walker
- * --------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * Connection.java
- *--------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: May 2013
- *--------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Ref:        Description:
- * ----------   --- ----------  --------------------------------------------------
- * 2013.08.30   WNW -           Made abstract and moved concrete to LocalConnection
- * 2015-03-11	WNW	2015-03		Updated in line with new lxData
- *================================================================================
+ *==============================================================================
  */
 package lexa.core.server.connection;
 
@@ -27,7 +20,7 @@ import lexa.core.server.context.Context;
 import lexa.core.server.context.Value;
 
 /**
- * A connection into the {@link MessageBroker} for submitting messages.
+ * A connection into the {@link Broker} for submitting messages.
  * <p>Connections are created by the broker and used by the external process to submit messages.
  *
  * @since   2013.04
@@ -45,7 +38,7 @@ public abstract class Connection {
     private final Map<Integer,Message> messages;
     /** the id of the last message sent */
     private int lastMessage;
-	
+
 	Connection(Broker broker,String name,  int id) {
 		this.logger = new Logger(Connection.class.getSimpleName(), name + "#" + id);
 		this.broker = broker;
@@ -149,13 +142,13 @@ public abstract class Connection {
         this.inbound(close);
         message.close();
     }
-	
+
 	/**
 	 * Send a message to the inbound processor
 	 * @param	data
 	 *			the message data being submitted
 	 */
 	abstract void inbound(DataSet data);
-	
+
 	abstract void start();
 }

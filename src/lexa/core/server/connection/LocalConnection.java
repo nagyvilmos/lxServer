@@ -1,17 +1,11 @@
-/*
- * ================================================================================
+/*==============================================================================
  * Lexa - Property of William Norman-Walker
- * --------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * LocalConnection.java
- *--------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: May 2013
- *--------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Ref:        Description:
- * ----------   --- ----------  --------------------------------------------------
- * 2013.08.13   WNW -           Made Connection an interface and moved this out.
- *================================================================================
+ *==============================================================================
  */
 package lexa.core.server.connection;
 
@@ -20,7 +14,7 @@ import lexa.core.server.Broker;
 import lexa.core.server.context.Value;
 
 /**
- * A connection into the {@link MessageBroker} for submitting messages.
+ * A connection into the {@link Broker} for submitting messages.
  * <p>Connections are created by the broker and used by the external process to submit messages.
  *
  * @since   2013.04
@@ -53,5 +47,5 @@ public class LocalConnection
 		// does nothing
 	}
 
-	
+
 }

@@ -26,7 +26,7 @@ import lexa.core.server.messaging.*;
 /**
  * A service set up using configuration.
  *
- * <p>The service is set up using config data provided by the {@link MessageBroker}.
+ * <p>The service is set up using config data provided by the {@link Broker}.
  * Each service contains a set of {@link Process} agents that handle the messages.
  * <p>The configuration for a service is:
  * <pre>

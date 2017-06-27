@@ -29,7 +29,7 @@ import lexa.core.process.Status;
 
 /**
  * A process agent set up using configuration.
- * <p>The process is set up using config data provided by the {@link ConfigService}.
+ * <p>The process is set up using config data provided by the {@link Service}.
  * Each process agent handles a single message type.
  * <p>The process can be used for handling multiple messages by name but the action
  * will be the same based on the configuration.
@@ -48,7 +48,7 @@ import lexa.core.process.Status;
  * <dt>&lt;processName&gt;</dt><dd>a unique name within the service for a process.</dd>
  * <dt>&lt;connectionName&gt;</dt><dd>the name of a message broker that this process will
  *      connect to for sending messages; the name may be {@code local}, for a loop back connection,
- *      or any named broker from the {@link MessageBroker} {@code brokerList} configuration block.
+ *      or any named broker from the {@link Broker} {@code brokerList} configuration block.
  *      [optional]</dd>
  * <dt>&lt;classPath&gt;</dt><dd>the class path for the {@link ProcessFactory}.</dd>
  * <dt>&lt;process config&gt;</dt><dd>the configuration for the process; see the implementations

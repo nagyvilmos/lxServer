@@ -1,17 +1,11 @@
-/*
- * ================================================================================
+/*==============================================================================
  * Lexa - Property of William Norman-Walker
- * --------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * Message.java
- *--------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: May 2013
- *--------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Ref:        Description:
- * ----------   --- ----------  --------------------------------------------------
- * 2015-03-11	WNW	2015-03		Updated in line with new lxData
- *================================================================================
+ *==============================================================================
  */
 package lexa.core.server.messaging;
 
@@ -88,7 +82,7 @@ public class Message {
                 message.getInteger(Context.SOURCE_REF));
     }
     /**
-     * Create a new message to submit to the {@link MessageBroker}.
+     * Create a new message to submit to the {@link lexa.core.server.Broker}.
      *
      * <p>Each message is self contained with an outbound request and inbound reply.
      *
@@ -106,7 +100,7 @@ public class Message {
     }
 
     /**
-     * Create a new message to submit to the {@link MessageBroker}.
+     * Create a new message to submit to the {@link lexa.core.server.Broker}.
      *
      * <p>Each message is self contained with an outbound request and inbound reply.
      *
@@ -127,7 +121,7 @@ public class Message {
     }
 
     /**
-     * Create a new message to submit to the {@link MessageBroker}.
+     * Create a new message to submit to the {@link lexa.core.server.Broker}.
      *
      * <p>Each message is self contained with an outbound request and inbound reply.
      *
@@ -162,7 +156,7 @@ public class Message {
     }
 
     /**
-     * Add a reply from the {@link MessageBroker} for this message.
+     * Add a reply for this message.
      *
      * @param   reply
      *          the reply data for the message.
@@ -204,7 +198,7 @@ public class Message {
      *     ...
      *   }]
      * }]
-     * <pre>
+     * </pre>
      *
      * @param   connectionId
      *          the id for the {@link Connection} submitting the message.
@@ -253,7 +247,7 @@ public class Message {
      * request {
      *   &lt;request&gt;
      * }
-     * <pre>
+     * </pre>
      *
      * @param   connectionId
      *          the id for the {@link Connection} submitting the message.
@@ -271,7 +265,7 @@ public class Message {
      * Indicates if a new reply has been received since last reading the reply stack.
      *
      * @return  {@code true} if a reply has been received since the last
-     *          call to {@link getReply() getReply()},
+     *          call to {@link #getReply()},
      *          otherwise {@code false}.
      */
     public boolean hasNewReply() {
