@@ -1,17 +1,11 @@
-/*
- * ================================================================================
+/*==============================================================================
  * Lexa - Property of William Norman-Walker
- * --------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * BrokerHandler.java
- *--------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: August 2014
- *--------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Ref:        Description:
- * ----------   --- ----------  --------------------------------------------------
- * 2015-03-11	WNW	2015-03		Updated in line with new lxData
- *================================================================================
+ *==============================================================================
  */
 package lexa.core.server;
 
@@ -29,8 +23,9 @@ import lexa.core.server.context.*;
 import lexa.core.server.messaging.*;
 
 /**
- *
+ * Handler for a message broker.
  * @author william
+ * @since 2014-08
  */
 public class BrokerHandler
 		implements MessagingHandler
@@ -190,6 +185,7 @@ public class BrokerHandler
     private synchronized void setRunning(boolean running) {
         this.logger.debug("setRunning " + running);
         this.running = running;
+        this.status.setActive(running);
         this.notifyAll();
     }
 

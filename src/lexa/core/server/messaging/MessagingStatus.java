@@ -5,7 +5,7 @@
  * MessagingStatus.java
  *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
- * Created: Month YEAR
+ * Created: February 2017
  *------------------------------------------------------------------------------
  *==============================================================================
  */
@@ -21,8 +21,9 @@ import lexa.core.data.DataSet;
 import lexa.core.data.object.DataObject;
 
 /**
- *
+ * Status of a server and it's components
  * @author william
+ * @since 2017-02
  */
 public class MessagingStatus
         implements DataObject
@@ -33,6 +34,7 @@ public class MessagingStatus
     private final String name;
     private int received;
     private int replied;
+    private boolean active;
     public MessagingStatus(String name)
     {
         this.name = name;
@@ -48,9 +50,24 @@ public class MessagingStatus
         throw new UnsupportedOperationException("MessagingStatus does not support fromData");
     }
 
+    public void setActive(boolean active)
+    {
+        this.active = active;
+    }
+
     public boolean isActive()
     {
-        throw new UnsupportedOperationException("MessagingStatus.isActive not supported yet.");
+        if (this.active)
+        {
+            for (MessagingStatus child : this.children)
+            {
+                if (!child.isActive())
+                {
+                    return false;
+                }
+            }
+        }
+        return this.active;
     }
 
     @Override

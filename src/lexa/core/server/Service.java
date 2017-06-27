@@ -1,17 +1,11 @@
-/*
- * ================================================================================
+/*==============================================================================
  * Lexa - Property of William Norman-Walker
- * --------------------------------------------------------------------------------
- * Connection.java
- *--------------------------------------------------------------------------------
+ *------------------------------------------------------------------------------
+ * Service.java
+ *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: August 2013
- *--------------------------------------------------------------------------------
- * Change Log
- * Date:        By: Ref:        Description:
- * ----------   --- ----------  --------------------------------------------------
- * 2015-03-11	WNW	2015-03		Updated in line with new lxData
- *================================================================================
+ *==============================================================================
  */
 package lexa.core.server;
 
@@ -90,8 +84,6 @@ public class Service
     private Broker messageBroker;
     /** The available processes */
     private final Map<String, MessagingContainer> processes;
-    /** Indicate if the service is in a running state */
-    private boolean running;
 	private MessagingContainer container;
 	private BrokerHandler broker;
 
@@ -148,6 +140,7 @@ public class Service
 		{
 			pac.start(this);
 		}
+        this.status.setActive(true);
 	}
 
 	@Override
