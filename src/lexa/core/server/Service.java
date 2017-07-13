@@ -1,7 +1,7 @@
 /*==============================================================================
  * Lexa - Property of William Norman-Walker
  *------------------------------------------------------------------------------
- * Service.java
+ * Service.java (lxServer)
  *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: August 2013
@@ -13,6 +13,7 @@ import lexa.core.process.ProcessException;
 import java.util.*;
 import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.DataSet;
+import lexa.core.data.DataType;
 import lexa.core.data.config.ConfigDataArray;
 import lexa.core.data.exception.DataException;
 import lexa.core.expression.ExpressionException;
@@ -102,7 +103,10 @@ public class Service
     private Service (ClassLoader classLoader, ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
             throws DataException, ProcessException, ExpressionException
 	{
-
+        config.validateType(
+                Config.NAME,            DataType.STRING,
+                Config.PROCESS_LIST,    DataType.ARRAY
+        );
         this.name = config.getString(Config.NAME);
         this.logger = new Logger(Service.class.getSimpleName() , this.name);
         this.status = new MessagingStatus(this.name);
@@ -112,6 +116,7 @@ public class Service
         for (int p=0; p < processList.size(); p++)
 		{
             ConfigDataSet processConfig = processList.get(p).getDataSet();
+            processConfig.validateType(Config.NAME, DataType.STRING);
             String pn = processConfig.getString(Config.NAME);
 			if (this.processes.containsKey(pn))
 			{

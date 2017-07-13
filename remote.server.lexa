@@ -1,5 +1,5 @@
 # test a remote server connection
-# logFile ./log/remote.log
+logFile ./log/remote.log
 logging {
 	* {
 		START ? false
@@ -16,12 +16,15 @@ servers {
                 port % 31066
               }
             }
-            serviceList {
-                remotePassthrough {
+            serviceList [
+                {
+                    name - remotePassthrough
                     wildcard - pass
-                    processList {
-                        pass {
-                            loader - lexa.core.server.factory.InternalLoader
+                    processList [
+                        {
+                            name - pass
+                            # not needed as it's default but good to check
+                            loader - lexa.core.process.factory.InternalLoader
                             class - PassThrough
                             connectionName - remoteBroker
                             maxProcesses % 1
@@ -32,9 +35,9 @@ servers {
                                 }
                             }
                         }
-                    }
+                    ]
                 }
-            }
+            ]
         }
         message {
             service - testService

@@ -154,7 +154,10 @@ public class ServerConfig
                 }
                 logger.info("status",this.broker.getStatus().toData());
                 slept++;
-                this.wait(1000);
+                synchronized(this)
+                {
+                    this.wait(1000);
+                }
             }
             if (slept > 1) {
                 logger.debug("woken");

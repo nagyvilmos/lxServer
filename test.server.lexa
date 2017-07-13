@@ -29,7 +29,7 @@ servers {
                     processList [
                         {
                             name - echoProc
-                            # loader - lexa.core.server.factory.InternalLoader
+                            # loader - lexa.core.process.factory.InternalLoader
                             class - Echo
                         }
                     ]

@@ -5,19 +5,20 @@
 #  - convert : converts from one currency to another.
 
 # log to stdio for now
-# logFile .\\log\\config.log
+logFile .\\log\\config.log
 servers {
     config {
         broker {
             name rates
 			type inline
-            serviceList {
-                currencies {
-                    processList {
-						singleRate @include singleRate.process.lexa
-                    }
+            serviceList [
+                {
+                    name - currencies
+                    processList [
+                        @include singleRate.process.lexa
+                    ]
                 }
-            }
+            ]
             logging {
                 * {
                     * ? true

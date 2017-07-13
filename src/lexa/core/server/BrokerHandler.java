@@ -1,7 +1,7 @@
 /*==============================================================================
  * Lexa - Property of William Norman-Walker
  *------------------------------------------------------------------------------
- * BrokerHandler.java
+ * BrokerHandler.java (lxServer)
  *------------------------------------------------------------------------------
  * Author:  William Norman-Walker
  * Created: August 2014
@@ -9,15 +9,16 @@
  */
 package lexa.core.server;
 
-import lexa.core.process.ProcessException;
 import java.util.*;
 import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.DataSet;
+import lexa.core.data.DataType;
 import lexa.core.data.config.ConfigDataArray;
 import lexa.core.data.exception.DataException;
 import lexa.core.expression.ExpressionException;
 import lexa.core.expression.function.FunctionLibrary;
 import lexa.core.logging.Logger;
+import lexa.core.process.ProcessException;
 import lexa.core.server.connection.Connection;
 import lexa.core.server.context.*;
 import lexa.core.server.messaging.*;
@@ -66,6 +67,11 @@ public class BrokerHandler
 	private BrokerHandler(ConfigDataSet config, FunctionLibrary functionLibrary, boolean inline)
 			throws DataException, ProcessException, ExpressionException
 	{
+        // check we have the correct types
+        config.validateType(
+            Config.NAME,            DataType.STRING ,
+            Config.SERVICE_LIST,    DataType.ARRAY
+        );
 		this.name = config.getString(Config.NAME);
         this.logger = new Logger(BrokerHandler.class.getSimpleName() , this.name);
         this.status=new MessagingStatus(this.name);
@@ -85,6 +91,7 @@ public class BrokerHandler
         for (int v=0; v <serviceList.size(); v++)
 		{
             ConfigDataSet serviceConfig = serviceList.get(v).getDataSet();
+            serviceConfig.validateType(Config.NAME, DataType.STRING);
             String sn = serviceConfig.getString(Config.NAME);
             if (this.services.containsKey(sn))
 			{

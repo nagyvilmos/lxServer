@@ -1,4 +1,5 @@
 # singleRate config
+name - singleRate
 class - Config
 maxProcesses % 1
 config {
