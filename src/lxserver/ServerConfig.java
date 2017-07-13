@@ -12,6 +12,12 @@ package lxserver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import lexa.core.data.DataSet;
 import lexa.core.data.config.ConfigDataSet;
 import lexa.core.data.exception.DataException;
@@ -55,6 +61,28 @@ public class ServerConfig
         if (this.testList == null || this.testList.equals(""))
         {
             return new String[]{"test"};
+        }
+        else if ("-all".equals(this.testList))
+        {
+            // get all the files
+            List<String> fileList = new ArrayList();
+            try (DirectoryStream<Path> dirStream =
+                    Files.newDirectoryStream(
+                        Paths.get("."), "*.server.lexa"))
+            {
+                dirStream.forEach(path ->
+                {
+                    String name = path.getFileName().toFile()
+                            .getName();
+                    name = name.substring(0, name.length() - 12);
+                    fileList.add(name);
+                });
+            }
+            catch (IOException ex)
+            {
+                this.logger.error("Failed to find config", ex);
+            }
+            return fileList.toArray(new String[0]);
         }
         return this.testList.split(" ");
     }
